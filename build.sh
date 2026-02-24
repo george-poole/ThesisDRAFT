@@ -1,15 +1,17 @@
 OPT=${1:-"preview"}
 THESIS_DIR="./thesis"
 THESIS_PDF="Thesis-Title"
+CONDA_ENV="lucifex"
+
+# conda init
+# conda activate $CONDA_ENV
 
 if [[ "$OPT" == "preview" ]]; then
     quarto preview $THESIS_DIR
 elif [[ "$OPT" == "render" ]]; then
     quarto render $THESIS_DIR
-elif [[ "$OPT" == "html" ]]; then
-    quarto render --to html $THESIS_DIR
-elif [[ "$OPT" == "pdf" ]]; then
-    quarto render --to pdf $THESIS_DIR
+elif [[ "$OPT" == "remote" ]]; then
+    quarto publish gh-pages $THESIS_DIR
 else
     echo "Invalid option ${OPT}"
 fi

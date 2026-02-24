@@ -1,0 +1,5 @@
+# Numerical methods
+
+{{< include ./chapter03/chapter031.qmd >}}
+
+{{< include ./chapter03/chapter032.qmd >}}

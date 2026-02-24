@@ -6,9 +6,8 @@
 
 <meta name="viewport" content="width=device-width, initial-scale=1.0, user-scalable=yes">
 
-<meta name="author" content="George Poole">
 
-<title>Modelling of Advective-Diffusive-Reactive Flows in Geological Carbon Sequestration</title>
+<title>Finite element formulations – Modelling of Advective-Diffusive-Reactive Flows in Geological Carbon Sequestration</title>
 <style>
 code{white-space: pre-wrap;}
 span.smallcaps{font-variant: small-caps;}
@@ -31,7 +30,8 @@ ul.task-list li input[type="checkbox"] {
 <script src="site_libs/quarto-search/fuse.min.js"></script>
 <script src="site_libs/quarto-search/quarto-search.js"></script>
 <meta name="quarto:offset" content="./">
-<link href="./asbtract.html" rel="next">
+<link href="./references.html" rel="next">
+<link href="./appendixA.html" rel="prev">
 <script src="site_libs/quarto-html/quarto.js" type="module"></script>
 <script src="site_libs/quarto-html/tabsets/tabsets.js" type="module"></script>
 <script src="site_libs/quarto-html/axe/axe-check.js" type="module"></script>
@@ -110,7 +110,7 @@ window.Quarto = {
 
 </head>
 
-<body class="nav-sidebar floating fullcontent quarto-light">
+<body class="nav-sidebar floating quarto-light">
 
 <div id="quarto-search-results"></div>
   <header id="quarto-header" class="headroom fixed-top">
@@ -119,7 +119,7 @@ window.Quarto = {
       <button type="button" class="quarto-btn-toggle btn" data-bs-toggle="collapse" role="button" data-bs-target=".quarto-sidebar-collapse-item" aria-controls="quarto-sidebar" aria-expanded="false" aria-label="Toggle sidebar navigation" onclick="if (window.quartoToggleHeadroom) { window.quartoToggleHeadroom(); }">
         <i class="bi bi-layout-text-sidebar-reverse"></i>
       </button>
-        <nav class="quarto-page-breadcrumbs" aria-label="breadcrumb"><ol class="breadcrumb"><li class="breadcrumb-item"><a href="./index.html">Declaration</a></li></ol></nav>
+        <nav class="quarto-page-breadcrumbs" aria-label="breadcrumb"><ol class="breadcrumb"><li class="breadcrumb-item"><a href="./appendixB.html">Finite element formulations</a></li></ol></nav>
         <a class="flex-grow-1" role="navigation" data-bs-toggle="collapse" data-bs-target=".quarto-sidebar-collapse-item" aria-controls="quarto-sidebar" aria-expanded="false" aria-label="Toggle sidebar navigation" onclick="if (window.quartoToggleHeadroom) { window.quartoToggleHeadroom(); }">      
         </a>
       <button type="button" class="btn quarto-search-button" aria-label="Search" onclick="window.quartoOpenSearch();">
@@ -146,7 +146,7 @@ window.Quarto = {
     <ul class="list-unstyled mt-1">
         <li class="sidebar-item">
   <div class="sidebar-item-container"> 
-  <a href="./index.html" class="sidebar-item-text sidebar-link active">
+  <a href="./index.html" class="sidebar-item-text sidebar-link">
  <span class="menu-text">Declaration</span></a>
   </div>
 </li>
@@ -188,6 +188,24 @@ window.Quarto = {
 </li>
         <li class="sidebar-item">
   <div class="sidebar-item-container"> 
+  <a href="./chapter04.html" class="sidebar-item-text sidebar-link">
+ <span class="menu-text"><span class="chapter-number">4</span>&nbsp; <span class="chapter-title">Numerical software</span></span></a>
+  </div>
+</li>
+        <li class="sidebar-item">
+  <div class="sidebar-item-container"> 
+  <a href="./appendixA.html" class="sidebar-item-text sidebar-link">
+ <span class="menu-text">List of symbols</span></a>
+  </div>
+</li>
+        <li class="sidebar-item">
+  <div class="sidebar-item-container"> 
+  <a href="./appendixB.html" class="sidebar-item-text sidebar-link active">
+ <span class="menu-text">Finite element formulations</span></a>
+  </div>
+</li>
+        <li class="sidebar-item">
+  <div class="sidebar-item-container"> 
   <a href="./references.html" class="sidebar-item-text sidebar-link">
  <span class="menu-text">References</span></a>
   </div>
@@ -197,25 +215,21 @@ window.Quarto = {
 </nav>
 <div id="quarto-sidebar-glass" class="quarto-sidebar-collapse-item" data-bs-toggle="collapse" data-bs-target=".quarto-sidebar-collapse-item"></div>
 <!-- margin-sidebar -->
-    
+    <div id="quarto-margin-sidebar" class="sidebar margin-sidebar zindex-bottom">
+        
+    </div>
 <!-- main -->
 <main class="content" id="quarto-document-content">
 
 <header id="title-block-header" class="quarto-title-block default">
 <div class="quarto-title">
-<h1 class="title">Modelling of Advective-Diffusive-Reactive Flows in Geological Carbon Sequestration</h1>
+<h1 class="title">Finite element formulations</h1>
 </div>
 
 
 
 <div class="quarto-title-meta">
 
-    <div>
-    <div class="quarto-title-meta-heading">Author</div>
-    <div class="quarto-title-meta-contents">
-             <p>George Poole </p>
-          </div>
-  </div>
     
   
     
@@ -226,12 +240,113 @@ window.Quarto = {
 </header>
 
 
-<section id="declaration" class="level1 unnumbered unlisted">
-<h1 class="unnumbered unlisted">Declaration</h1>
-<p>Declaration goes here…</p>
+<p>In this appendix we derive the finite element formulations of <span class="math inline">\(\eqref{eq:FiniteDifferenceSoluteTransport}\)</span>-<span class="math inline">\(\eqref{eq:FiniteDifferenceDarcy}\)</span> and <span class="math inline">\(\eqref{eq:FiniteDifferenceStreamfunctionPoisson}\)</span>-<span class="math inline">\(\eqref{eq:FiniteDifferenceStreamfunctionVelocity}\)</span>.</p>
+<p>% We include here for completeness an alternative method of solving Darcy’s equation for the fluid velocity and pressure together via a mixed finite element method (MFEM), replacing the above steps [ref] and [ref]. In addition to being applicable in 3D and being capable of handling boundary conditions of prescribed pressure and non-zero prescribed, another advantage this method has over the 2D streamfunction formulation is that it does not require incompressibility. Retaining the <span class="math inline">\(\varepsilon\)</span> term in [eqref], we have</p>
+<p><span class="math inline">\(\eqref{eq:FiniteDifferenceContinuity}\)</span> and <span class="math inline">\(\eqref{eq:FiniteDifferenceDarcy}\)</span></p>
+<p>The streamfunction equation <span class="math inline">\(\eqref{eq:FiniteDifferenceStreamfunctionPoisson}\)</span> is readily identified as a tensor-weighted Poisson equation, and as such is very amenable to the finite element method. We derive the variational problem, that is to find <span class="math inline">\(\psi^n\in V_\psi\)</span> such that</p>
+<p><span class="math display">\[\begin{equation}
+\label{eq:VariationalStreamfunction}
+\int_{\partial\Omega}\text{d}\Gamma~v\,\textbf{n}\cdot\nabla\psi^n-\int_\Omega\text{d}\Omega~\nabla v\cdot\bigg(\frac{\mu^n\,(\mathsf{K}^n)^{\mathsf{T}}\cdot\nabla\psi^n}{\det(\mathsf{K}^n)}\bigg)=\int_\Omega\text{d}\Omega~v\cos\beta\frac{\partial\rho^n}{\partial x} - v\sin\beta\frac{\partial\rho^n}{\partial y} ~~~\forall v\in\hat{V}_\psi
+\end{equation}\]</span></p>
+<p>by multiplying <span class="math inline">\(\eqref{eq:FiniteDifferenceStreamfunctionPoisson}\)</span> by some test function <span class="math inline">\(v\)</span>, integrating over the domain <span class="math inline">\(\Omega\)</span> and integrating the left-hand side by parts. <span class="math inline">\(V_\psi\)</span> and <span class="math inline">\(\hat{V}_\psi\)</span> are a suitably-chosen function spaces for the trial function <span class="math inline">\(\psi\)</span> and the test function <span class="math inline">\(v\)</span> respectively. We choose for the (discretized) trial and test function space</p>
+<p><span class="math display">\[\begin{equation}
+V_\psi = \hat{V}_\psi = \{v\in H^1(\Omega)~,~v|_{\partial\Omega}=0~,~v|_{\mathcal{K}}\in\text{P}_k(\mathcal{K})~\forall\mathcal{K}\in\cup_{\mathcal{K}}\mathcal{K}\}
+\end{equation}\]</span></p>
+<p>with <span class="math inline">\(k\geq2\)</span>, where <span class="math inline">\(\text{P}_k(\mathcal{K})\)</span> denotes a Lagrange polynomial of degree <span class="math inline">\(k\)</span> on the cell <span class="math inline">\(\mathcal{K}\)</span> of the mesh <span class="math inline">\(\Omega\)</span> and <span class="math inline">\(H^1(\Omega)\)</span> denotes the Sobolev space. Since the test function vanishes on the boundary and the streamfunction boundary condition <span class="math inline">\(\psi|_{\partial\Omega}=0\)</span> is a pure Dirichlet boundary condition, the above term for Neumann boundary conditions vanishes leaving</p>
+<p><span class="math display">\[\begin{equation}
+F_\psi(\psi^n, v)\equiv -\int_\Omega\text{d}\Omega~\nabla v\cdot\bigg(\frac{\mu^n\,(\mathsf{K}^n)^{\mathsf{T}}\cdot\nabla\psi^n}{\det(\mathsf{K}^n)}\bigg) - v\cos\beta\frac{\partial\rho^n}{\partial x} + v\sin\beta\frac{\partial\rho^n}{\partial y}=0 ~~~\forall v\in\hat{V}_\psi
+\end{equation}\]</span></p>
+<p>Whilst the advection expression <span class="math inline">\(\textbf{u}\cdot\nabla c\)</span> in the transport equations <span class="math inline">\(\eqref{eq:FiniteDifferenceSoluteTransport}\)</span> and <span class="math inline">\(\eqref{eq:FiniteDifferenceHeatTransport}\)</span> could simply be written in terms of the streamfunction as <span class="math inline">\((\partial\psi/\partial y, -\partial\psi/\partial x)\cdot\nabla c\)</span> to avoid having to directly compute the velocity prior to solving <span class="math inline">\(\eqref{eq:FiniteDifferenceSoluteTransport}\)</span>, in practice it is desirable to compute <span class="math inline">\(\textbf{u}\)</span> throughout the course of the simulation in order to verify that no-flux boundary conditions are respected. Furthermore having <span class="math inline">\(\textbf{u}^n\)</span> available simplifies the computation of secondary quantities such as the advective flux <span class="math inline">\(\eqref{eq:SolutalAdvectiveFlux}\)</span>, maximum speed <span class="math inline">\(\max_{\textbf{x}}|\textbf{u}^n|\)</span> and CFL timestep <span class="math inline">\(\eqref{eq:TimestepCFL}\)</span>. For a streamfunction in the continuous Lagrange function space of degree <span class="math inline">\(k~(=2)\)</span>, it is appropritate to choose for velocity a vector-valued discontinuous Lagrange function space of degree <span class="math inline">\(k-1~(=1)\)</span>.</p>
+<p><span class="math display">\[\begin{equation}
+V_{\textbf{u}} = \{\textbf{v}\in L^2(\Omega)\times L^2(\Omega)~,~\textbf{n}\cdot\textbf{v}|_{\partial\Omega}=0~,~\textbf{v}|_{\mathcal{K}}\in\text{DP}_{k-1}(\mathcal{K})\times\text{DP}_{k-1}(\mathcal{K})~\forall\mathcal{K}\in\cup_{\mathcal{K}}\mathcal{K}\}
+\end{equation}\]</span></p>
+<p>incorporating the no-flux boundary conditions, where <span class="math inline">\(\text{DP}_k(\mathcal{K})\)</span> denotes a discontinuous Lagrange polynomial of degree <span class="math inline">\(k\)</span> on the cell <span class="math inline">\(\mathcal{K}\)</span> of the mesh <span class="math inline">\(\Omega\)</span> and <span class="math inline">\(L^2(\Omega)\)</span> denotes the Lebesgue space. Solving for <span class="math inline">\(\textbf{u}\)</span> can either be treated as the projection problem of finding <span class="math inline">\(\textbf{u}\in V_{\textbf{u}}\)</span> such that</p>
+<p><span class="math display">\[\begin{equation}
+F_{\textbf{u}}(\textbf{u}^n, \textbf{v})=
+\int_\Omega\text{d}\Omega~\textbf{v}\cdot\textbf{u}^n-\int_\Omega\text{d}\Omega~\textbf{v}\cdot\begin{pmatrix}
+\frac{\partial\psi^n}{\partial y} \\
+-\frac{\partial\psi^n}{\partial x}
+\end{pmatrix}~~~\forall\textbf{v}\in\hat{V}_{\textbf{u}}
+\end{equation}\]</span></p>
+<p>or alternatively as the interpolation problem of the vector-valued expression <span class="math inline">\((\partial\psi^n/\partial y, -\partial\psi^n/\partial x)\)</span> into the function space <span class="math inline">\(V_{\textbf{u}}\)</span>. The interpolation problem has the advantage of being less computationally demanding since no matrix assembly and inversion is required.</p>
+<p>Firstly it is convenient to divide the transport equation <span class="math inline">\(\eqref{eq:FiniteDifferenceSoluteTransport}\)</span> through by the porosity <span class="math inline">\(\phi\)</span> so that the time derivative term is not multiplied by a non-constant coefficient. Then we choose for the (discretized) test and trial function spaces</p>
+<p><span class="math display">\[\begin{align}
+V_c &amp;= \{v\in H^1(\Omega)~,~v|_{\mathcal{K}}\in\text{P}_k(\mathcal{K})~\forall\mathcal{K}\in\cup_{\mathcal{K}}\mathcal{K}\} \\
+\hat{V}_c &amp;= \{v\in H^1(\Omega)~,~v|_{\partial\Omega}=0~,~v|_{\mathcal{K}}\in\text{P}_k(\mathcal{K})~\forall\mathcal{K}\in\cup_{\mathcal{K}}\mathcal{K}\}
+\end{align}\]</span></p>
+<p>with degree <span class="math inline">\(k=1\)</span> such that at the <span class="math inline">\(n^{\text{th}}\)</span> integration step the variational problem is to find <span class="math inline">\(c^{n+1}\in V_c\)</span> such that</p>
+<p><span class="math display">\[\begin{equation}
+\begin{aligned}
+\label{eq:TransportCGAppendix}
+F_c(c^{n+1}, v)&amp;\equiv \int_\Omega\text{d}\Omega~v\frac{c^{n+1}-c^n}{\Delta t^n} \\
+&amp;\quad\quad +v\frac{\mathcal{D}_A(\textbf{u}\cdot\nabla c)}{\mathcal{D}_\phi(\phi)} \\
+&amp;\quad\quad +\frac{1}{Ra}\nabla\bigg(\frac{v}{\mathcal{D}_\phi(\phi)}\bigg)\cdot(\mathcal{D}_D(\mathsf{D}\cdot\nabla c)) \\
+&amp;\quad\quad  + v\,Da\frac{\mathcal{D}_R(R)}{\mathcal{D}_\phi(\phi)} \\
+&amp;\quad -\int_{\partial\Omega}\text{d}\Omega~\frac{1}{Ra}v\textbf{n}\cdot(\mathsf{D}\cdot\nabla c) \\
+&amp;=0\qquad \forall v\in\hat{V}_c
+\end{aligned}
+\end{equation}\]</span></p>
+<p>The boundary term vanishes by virtue of the no-flux boundary condition <span class="math inline">\(\textbf{n}\cdot(\mathsf{D}\cdot\nabla c)=0|_{\partial\Omega}\)</span>, which in the case of an isotropic dispersion <span class="math inline">\(\mathsf{D}\propto\mathsf{I}\)</span> simplifies to <span class="math inline">\(\textbf{n}\cdot\nabla c=0|_{\partial\Omega}\)</span>. The finite difference operators <span class="math inline">\(\mathcal{D}_{\phi, A, D, R}\)</span> act on the porosity, advection, diffusion and reaction expressions respectively. Since <span class="math inline">\(\textbf{u}^{n+1}\)</span>, <span class="math inline">\(\phi^{n+1}\)</span> and <span class="math inline">\(s^{n+1}\)</span> are not solved for prior to solving for <span class="math inline">\(c^{n+1}\)</span> in the numerical integration algorithm <span class="math inline">\(\ref{alg:NumericalIntegration}\)</span>, the finite difference discretizations produced by <span class="math inline">\(\mathcal{D}_{\phi, A, D, R}\)</span> must be explicit with respect to <span class="math inline">\(\textbf{u}\)</span>, <span class="math inline">\(\phi\)</span> and <span class="math inline">\(s\)</span>.</p>
+<p>The continuous Galerkin formulation of the advection-dominated transport equation (i.e.&nbsp;<span class="math inline">\(\eqref{eq:TransportCGAppendix}\)</span> in the limit of large <span class="math inline">\(Ra\)</span>) requires additional stabilization terms to prevent spurious oscillations in the numerical solution. The streamline-upwind Petrov-Galerkin (SUPG) [cite] method adds to <span class="math inline">\(\eqref{eq:TransportCGAppendix}\)</span> the term</p>
+<p><span class="math display">\[F_{\text{SUPG}}(c^{n+1}, v)=\int_\Omega\text{d}\Omega~\tau^n(\textbf{u}^n_{\text{eff}}\cdot\nabla )\mathcal{R}^{n+1}\]</span></p>
+<p>where <span class="math inline">\(\tau^n\)</span> is a stabilization parameter, <span class="math inline">\(\textbf{u}^n_{\text{eff}}\)</span> is an effective velocity and</p>
+<p><span class="math display">\[\begin{align}
+\label{eq:ResidualSUPG}
+\mathcal{R}^{n+1}&amp;=\frac{c^{n+1}-c^n}{\Delta t^n} + \frac{\mathcal{D}_A(\textbf{u}\cdot\nabla c)}{\mathcal{D}_\phi(\phi)} - \frac{1}{Ra}\frac{\mathcal{D}_D(\nabla\cdot(\mathsf{D}\cdot\nabla c))}{\mathcal{D}_\phi(\phi)} - Da\frac{\mathcal{D}_R(R)}{\mathcal{D}_\phi(\phi)}
+\end{align}\]</span></p>
+<p>is the residual. The choice of <span class="math inline">\(\tau^n\)</span> optimal in successfully quelling spurious oscillations without introducing excessive numerical dissipation is an active topic of research, and as such there exist a number of possible expressions for <span class="math inline">\(\tau^n\)</span> in terms of an effective velocity <span class="math inline">\(\textbf{u}^n_{\text{eff}}\)</span>, effective diffusivity <span class="math inline">\(\mathsf{D}^n_{\text{eff}}\)</span> and reaction <span class="math inline">\(R^n_{\text{eff}}\)</span>, which are defined with reference to [eqref] cast in the form of the steady-state transport equation</p>
+<p><span class="math display">\[\begin{align}
+\textbf{u}^n_{\text{eff}}\cdot\nabla c^{n+1}-\nabla\cdot(\mathsf{D}^n_{\text{eff}}\cdot\nabla c^{n+1})+R^n_{\text{eff}}c^{n+1}=S^n
+\end{align}\]</span></p>
+<p>with source term <span class="math inline">\(S^n\)</span> explicit in <span class="math inline">\(c\)</span>. In general <span class="math inline">\(\tau^n=\tau^n(\textbf{u}^n_{\text{eff}}, \mathsf{D}^n_{\text{eff}}, R^n_{\text{eff}}, \ell)\)</span> given some local cell size measure <span class="math inline">\(\ell(\textbf{x})\)</span>. In the case of the 1D advection-diffusion equation with no reaction term, the optimal stabilization parameter is known to be</p>
+<p><span class="math display">\[\begin{align}
+\tau^n = \frac{\ell}{2|\textbf{u}^n_{\text{eff}}|} \bigg(\text{coth}\bigg(\frac{|\textbf{u}^n_{\text{eff}}|\ell}{2D^n_{\text{eff}}}\bigg) - \frac{2D^n_{\text{eff}}}{|\textbf{u}^n_{\text{eff}}|\ell}\bigg)
+\end{align}\]</span></p>
+<p>but, strictly speaking, this result does not generalize to higher dimensions. Nonetheless it can be used anyway in 2D or 3D with some success [cite]. [ref] suggests the form,</p>
+<p><span class="math display">\[\begin{align}
+\label{eq:TauCodina}
+\tau^n &amp;=\bigg(\frac{2|\textbf{u}^n_{\text{eff}}|}{\ell}+\frac{4D^n_{\text{eff}}}{\ell^2}+R^n_{\text{eff}}\bigg)^{-1}
+\end{align}\]</span></p>
+<p>or alternatively following [ref]</p>
+<p><span class="math display">\[\begin{align}
+\label{eq:TauShakib}
+\tau^n &amp;=\bigg(\bigg(\frac{2|\textbf{u}^n_{\text{eff}}|}{\ell}\bigg)^2+9\bigg(\frac{4D^n_{\text{eff}}}{\ell^2}\bigg)^2+(R^n_{\text{eff}})^2\bigg)^{-1/2}
+\end{align}\]</span></p>
+<p>In the discontinuous Galerkin (DG) method, we instead choose for the trial and test spaces</p>
+<p><span class="math display">\[\begin{align}
+V_c = \hat{V}_c = \{v\in H^1(\Omega)~,~v|_{\mathcal{K}}\in\text{DP}_k(\mathcal{K})~\forall\mathcal{K}\in\cup_{\mathcal{K}}\mathcal{K}\}
+\end{align}\]</span></p>
+<p>with degree <span class="math inline">\(k=1\)</span>. In contrast to the CG method, requirement of continuity at each mesh cell vertex is relaxed in favour of imposing local flux conservation across cell facets [rethink]. Dirichlet boundary conditions are also weakly imposed in the variational formulation, as opposed to being stronly imposed on the linear algebra. We denote by <span class="math inline">\(\{\cdot\}\)</span> and <span class="math inline">\(\llbracket\cdot\rrbracket\)</span> the cell facet average and jump operators defined by</p>
+<p><span class="math display">\[\begin{align}
+\{v\}&amp;=\frac{1}{2}(v^++v^-) \\
+\{\textbf{v}\}&amp;=\frac{1}{2}(\textbf{v}^++\textbf{v}^-) \\
+\llbracket v \rrbracket &amp;= v^+ - v^- \\
+\llbracket\textbf{v}\rrbracket &amp;= \textbf{n}^+\cdot\textbf{v}^+ - \textbf{n}^-\cdot\textbf{v}^- = \textbf{n}\cdot(\textbf{v}^+ - \textbf{v}^-)
+\end{align}\]</span></p>
+<p>when acting on either a scalar <span class="math inline">\(v\)</span> or vector <span class="math inline">\(\textbf{v}\)</span>. Here <span class="math inline">\(\textbf{n} = \textbf{n}^+ = -\textbf{n}^-\)</span> is the outward unit normal on a cell facet. Following the lengthy derivation of [cite], the variational problem is to find <span class="math inline">\(c^{n+1}\in V_c\)</span> such that</p>
+<p><span class="math display">\[\begin{equation}
+\begin{aligned}
+\label{eq:AppendixTransportDG}
+F_c(c^{n+1},v)&amp;\equiv \int_\Omega\text{d}\Omega~v\frac{c^{n+1}-c^n}{\Delta t^n} \\
+&amp;\quad\quad + ... \\
+&amp;\quad\quad  + v\,Da\frac{\mathcal{D}_R(R)}{\mathcal{D}_\phi(\phi)} \\
+&amp;\quad -\int_{\partial\Omega}\text{d}\Omega~\frac{1}{Ra}v\textbf{n}\cdot(\mathsf{D}\cdot\nabla c) \\
+&amp;=0 \forall v\in\hat{V}_c
+\end{aligned}
+\end{equation}\]</span></p>
+<p>Again in contrast to the CG formulation, Dirichlet boundary conditions are weakly imposed in the variational formulation by the penalty parameter <span class="math inline">\(\gamma_{\text{DG}}\)</span> rather than being imposed strongly on the linear algebra.</p>
+<p>Finite element formulations of the thermal transport equation <span class="math inline">\(\eqref{eq:FiniteDifferenceHeatTransport}\)</span> are identical to those of the solute transport equation <span class="math inline">\(\eqref{eq:FiniteDifferenceSoluteTransport}\)</span>, except with terms relating the reaction omitted.</p>
+<p>Since the evolution equation <span class="math inline">\(\eqref{eq:FiniteDifferenceEvolution}\)</span> contains no spatial derivatives, it is essentially just a projection problem to be solved for <span class="math inline">\(s^{n+1}\)</span>.</p>
+<p><span class="math display">\[\begin{equation}
+\label{eq:AppendixEvolution}
+F_s(s^{n+1},v) \equiv \int_\Omega\text{d}\Omega~v\frac{s^{n+1}-s^n}{\Delta t^n}  + v\,\varepsilon Da\frac{\mathcal{D}_R(R)}{\varphi} =0\qquad \forall v\in\hat{V}_s
+\end{equation}\]</span></p>
+<p>with function spaces <span class="math inline">\(V_s = \hat{V}_s = \{v\in H^1(\Omega)~,~v|_{\mathcal{K}}\in\text{P}_k(\mathcal{K})~\forall\mathcal{K}\in\cup_{\mathcal{K}}\mathcal{K}\}\)</span>. Alternatively, if <span class="math inline">\(\mathcal{D}_R\)</span> is explicit with respect to <span class="math inline">\(s\)</span> then <span class="math inline">\(\eqref{eq:FiniteDifferenceEvolution}\)</span> may be rearranged explicitly for <span class="math inline">\(s^{n+1}\)</span> and we have the interpolation problem of</p>
+<p><span class="math display">\[s^{n+1} = s^{n} -\Delta t\,\varepsilon Da\frac{\mathcal{D}_R(R)}{\varphi}\]</span></p>
+<p>into the function space <span class="math inline">\(V_s\)</span>. <span class="math inline">\(\mathcal{D}_R\)</span> need not be explicit with respect to <span class="math inline">\(c\)</span> since <span class="math inline">\(c^{n+1}\)</span> is solved for before <span class="math inline">\(s^{n+1}\)</span> in Algorithm <span class="math inline">\(\ref{alg:NumericalIntegration}\)</span>.</p>
+<p>% was less computationally costly and did not suffer from instabilities or unphysical saturation values outside the permitted range <span class="math inline">\(S\in[0, s_r]\)</span> compared to the projection problem: find <span class="math inline">\(s^{n+1}\in V_S\)</span> such that</p>
 
 
-</section>
 
 </main> <!-- /main -->
 <script id="quarto-html-after-body" type="application/javascript">
@@ -636,10 +751,13 @@ window.Quarto = {
   </script>
 <nav class="page-navigation">
   <div class="nav-page nav-page-previous">
+      <a href="./appendixA.html" class="pagination-link" aria-label="List of symbols">
+        <i class="bi bi-arrow-left-short"></i> <span class="nav-page-text">List of symbols</span>
+      </a>          
   </div>
   <div class="nav-page nav-page-next">
-      <a href="./asbtract.html" class="pagination-link" aria-label="Abstract">
-        <span class="nav-page-text">Abstract</span> <i class="bi bi-arrow-right-short"></i>
+      <a href="./references.html" class="pagination-link" aria-label="References">
+        <span class="nav-page-text">References</span> <i class="bi bi-arrow-right-short"></i>
       </a>
   </div>
 </nav>

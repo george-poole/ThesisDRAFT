@@ -1,0 +1,24 @@
+## Porosity & saturation
+
+::: {#fig-pore_scale}
+
+![](./figures/pore_scale.png){#fig-pore_scale width=70%}
+
+Pore-scale schematic illustrating the partition of space into brine fluid, capillary-trapped CO$_2$ and rock. 'Bubbles' or ganglia of CO$_2$ are held in place by surface tension forces, but dissolve into the surrounding brine. The rock is assumed inert, reacting with neither CO$_2$ nor brine.
+:::
+
+We consider a porous medium consisting of rock, brine fluid and capillary-trapped CO$_2$ as illustrated in @fig-pore_scale , such that the partition of space can be expressed as
+
+\begin{align}
+\label{PorosityPartition}
+\phi + \phi_{\text{CO}_2} + \phi_{\text{rock}} = 1
+\end{align}
+
+where the porosity $\phi$ is the volume fraction of brine fluid and the remaining volume fractions $\phi_{\text{CO}_2}$ and $\phi_{\text{rock}}$ are contributed by the capillary-trapped CO$_2$ and rock, respectively. As modelling assumptions we assume that the rock is inert and the `bubbles' of capillary-trapped CO$_2$ held in place by surface tension forces are immobile, so that only the brine fluid is mobile. However the amount capillary-trapped CO$_2$ is able to gradually diminish over time by dissolution into the neighbouring brine. In general, brine and single-phase CO$_2$ are a pair of immiscible liquids that can be modelled as a multiphase flow, but in this thesis we only investigate the considerably simpler problem of the single-phase flow of brine fluid containing dissolved CO$_2$. Given that we are primarily interested in the spatial extent and temporal evolution of the capillary-trapped CO$_2$, we can write the effective porosity
+
+\begin{align}
+\label{EffectivePorosity}
+\phi(\textbf{x},t)=\varphi(\textbf{x})(1-s(\textbf{x},t))    
+\end{align}
+
+in terms of the saturation $s(\textbf{x},t)$ of capillary-trapped CO$_2$ and the porosity  distribution $\varphi(\textbf{x})$ of the inert rock formation, which is in general heterogeneous. Since the rock is by assumption inert, $\frac{\partial\varphi}{\partial t}=0$ and any evolution in the effective porosity is solely due to evolution in the saturation. $s=0\Leftrightarrow\phi=\varphi$ corresponds to the pore space containing only brine fluid CO$_2$, whereas at the other extreme $s=1\Leftrightarrow\phi=0$ corresponds to pore space containing only capillary-trapped CO$_2$. In term of $s$ and $\varphi$, the the other volume fractions are $\phi_{\text{CO}_2}(\textbf{x},t)=\varphi(\textbf{x})s(\textbf{x},t)$ and $\phi_{\text{rock}}(\textbf{x})=1-\varphi(\textbf{x})$.

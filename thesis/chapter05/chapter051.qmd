@@ -1,0 +1,185 @@
+## System specification
+
+### Domain, initial and boundary conditions
+
+In this chapter to turn our attention to modelling the dissolution of capillary-trapped CO\textsubscript{2} in a horizontal 2D domain with impermeable boundaries, such that neither fluid, solute nor heat can enter or leave the dimensional domain $\Omega=[0,L]\times[0,H]$. We furthermore only consider solutal convection, in effect assuming an isothermal fluid. Working in the streamfunction formulation, the no-penetration and no-flux boundary conditions are
+
+\begin{align}
+\psi\vert_{\partial\Omega}&=0 \\
+\left[\textbf{n}\cdot(\mathsf{D}\cdot\nabla c)\right]\vert_{\partial\Omega} &= 0
+\end{align}
+
+and we set the initial conditions
+
+\begin{align}
+\label{eq:InitialConcentrationHorizontal2D}
+c_0(y) &= c_r\text{H}(y-h_0) = \begin{cases}
+c_r & h_0<y\leq1 \\
+0 & 0\leq y\leq h_0
+\end{cases} \\
+\label{eq:InitialSaturationHorizontal2D}
+s_0(y) &= s_r\text{H}(y-h_0) = \begin{cases}
+s_r & h_0<y\leq1 \\
+0 & 0\leq y\leq h_0
+\end{cases}
+\end{align}
+
+to create a domain initially devoid of CO\textsubscript{2} except in a thin ($(1-h_0\ll H)$) upper region $\Omega^+(t=0)=[0, L]\times[h_0, H]$ containing capillary-trapped CO\textsubscript{2} at residual saturation $s_r$ and  dissolved CO\textsubscript{2} at residual concentration $0\leq c_r\leq 1$. As time progresses, the reaction front height $h(x,t)$, defined as the curve 
+
+\begin{align}
+\label{eq:ReactionFront}
+\Gamma_R(t)=\{(x,y)\in\Omega~:~s(x,y,t)=0 \iff y=h(x,t)\}	
+\end{align}
+
+partitioning the domain $\Omega=\Omega^+(t)\cup\Omega^-(t)$ into an upper region $\Omega^+(t)=[0, L]\times[h(x,t), H]$ where $s>0$ and a lower region $\Omega^-(t)=[0, L]\times[0, h(x,t)]$ where $s=0$, will move upward and deform as the capillary-trapped CO\textsubscript{2} gets dissolved by the brine. Shortly after initialization, an unstable density stratification is established with dense CO\textsubscript{2}-rich above less dense pure brine, which leads to the onset of convective motion whereby buoyant plumes of CO\textsubscript{2}-deficient brine rise into the upper region to dissolve more capillary-trapped CO\textsubscript{2} and CO\textsubscript{2}-rich plumes sink the bottom of the domain. We illustrate the time-evolution of $\Omega^{\pm}(t)$ in the schematics of Figure \ref{fig:DomainHorizontal2D}.
+
+\begin{figure}[ht]
+\centering
+\begin{subfigure}[b]{0.475\textwidth}
+\centering
+\includegraphics[width=\textwidth]{figures/domain_horizontal_a.pdf}
+\caption{}
+\end{subfigure}
+\begin{subfigure}[b]{0.475\textwidth}
+\centering
+\includegraphics[width=\textwidth]{figures/domain_horizontal_b.pdf}
+\caption{}
+\end{subfigure}
+\caption{Schematics of the horizontal 2D domain (a) at initialization and (b) some time after initialization. Cartesian coordinates $\textbf{x}=x\,\textbf{e}_x+y\,\textbf{e}_y$ span the domain $\Omega$ and the gravity vector is $\textbf{g}=-g\textbf{e}_y$. The initial distribution of capillary-trapped CO\textsubscript{2} is shown by the shaded region $\Omega^+(t=0)$, which subsequently evolves to $\Omega^+(t>0)$  as the initially capillary-trapped CO\textsubscript{2} gets dissolved by the brine. The reaction front height $h(x, t)$ separates the shaded upper region $\Omega^+(t)$ which still contains capillary-trapped CO\textsubscript{2} from the rest of the domain $\Omega^-(t)$ where there is no capillary-trapped CO\textsubscript{2}.}
+\label{fig:DomainHorizontal2D}
+\end{figure}
+
+\subsection{Total vs. partial dissolution}
+
+As the concentration of CO\textsubscript{2} throughout the domain increases, the driving force for further convection, diffusive and reactive transport decreases until ultimately the end-state is reached, which is characterised by motionless brine at equilibrium concentration everywhere in $\Omega$
+
+\begin{align}
+c(\textbf{x}, t\to t_\infty)&=1 \\
+\textbf{u}(\textbf{x}, t\to t_\infty)&=\textbf{0} \\
+s(\textbf{x}, t\to t_\infty)&=s_\infty(\textbf{x})
+\end{align}
+
+Whether the capillary-trapped CO\textsubscript{2} is totally dissolved ($s_\infty=0$) or partially dissolved ($s_\infty>0$) in the end-state depends on whether there is sufficient brine available. Total dissolution requires the maximum possible mass than can be held in solution by the brine to be greater than or equal to the initial capillary-trapped mass
+\begin{align}
+m_D(t=t_{\text{end}}) \geq m_C(t=0) + m_D(t=0)
+\end{align}
+
+which given the definitions \eqref{eq:MassDissolved}, \eqref{eq:MassCapillaryTrapped} and initial conditions \eqref{eq:InitialConcentrationHorizontal2D},  \eqref{eq:InitialSaturationHorizontal2D} requires the density ratio $\varepsilon$, initial reaction front height $h_0$, residual saturation $s_r$ and residual concentration parameters $c_r$ to satify the inequality
+
+\begin{align}
+\label{eq:DissolutionInequality}
+\varepsilon\geq (1-h_0)(s_r + \varepsilon(1-s_r)c_r)	
+\end{align}
+
+We define $s_r^*$ as the critical residual saturation for a given $\varepsilon$, $h_0$ and $c_r$, and refer to residual saturations greater or less than  $s_r^*$ as supercritical and subcritical, respectively.
+
+### Constitutive relations
+
+\subsection{Fluid density}
+
+To close the non-dimensionalized governing equations \eqref{eq:EpsZeroSoluteTransport}, \eqref{eq:EpsZeroEvolution}, \eqref{eq:EpsZeroStreamfunctionPoisson} we now define the empirical constitutive relations for this chapter. We shall revert momentarily to using hats on non-dimensional and rescaled quantities (e.g. $\textbf{x}=H\widehat{\textbf{x}}$ and recalling the definitions from Table \ref{tab:NonDimensional}) in this section. To capture the essential fact that CO\textsubscript{2}-rich brine is denser than CO\textsubscript{2}-deficient brine, the density may be modelled by the dimensional equation of state
+
+\begin{align}
+\label{eq:FluidDensity}
+\rho(c) &=\rho_{\text{ref}}\bigg(1+\frac{\Delta\rho}{\rho_{\text{ref}}}\frac{c^n}{c^n_{\text{s}}}\bigg)\\
+\widehat{\rho}(\widehat{c}\,)&\equiv\frac{\rho - \rho_{\text{ref}}}{\Delta\rho}=\widehat{c}\,^n 
+\end{align}
+
+with exponent $n>0$, from which we see that the reference density $\rho_{\text{ref}}=\rho(c=0)$ corresponds to the brine density when no CO\textsubscript{2} is dissolved. We aim to use the simplest possible model that to capture the essential physical behaviour, so use a linear (i.e. $n=1$) fluid density.
+
+\subsection{Fluid viscosity}
+
+We could additionally include in our model the fact CO\textsubscript{2}-rich brine is more viscous than pure brine with a similar polynomial equation of state such as
+
+\begin{align}
+\label{eq:FluidViscosity}
+\mu(c) &=\mu_{\text{ref}}\bigg(1+b\frac{c^n}{c^n_{\text{s}}}\bigg) \\
+\widehat{\mu}(\widehat{c}\,)&\equiv\frac{\mu}{\mu_{\text{ref}}}=1+b\,\widehat{c}\,^n 
+\end{align}
+
+but in keeping with our stated principle of using the simplest possible model with assume an isoviscous fluid (i.e. $n=0$) with $\mu=\mu_{\text{ref}}$ or equivalently $\widehat{\mu}=1$.
+
+\subsection{Reaction rate}
+
+A simple model for the dissolution reaction rate
+
+\begin{equation}
+\label{eq:ReactionRate}
+R(s, c) = \Delta R\,s^a(1-s)^b\frac{(c_{\text{e}}-c)^n}{c_{\text{e}}^n}
+\end{equation}
+
+with exponents $a, b, n >0$ captures the requirements that no further dissolution occurs when the equilibrium concentration $c_{\text{e}}$ of CO\textsubscript{2} in brine is reached. Furthermore $R=0$ when either there is no CO\textsubscript{2} in the pore space ($s=0$) or the pore space is filled entirely with CO\textsubscript{2} ($s=1$). At low saturations, increasing the saturation should increase the reaction rate due to the larger surface area of capillary-trapped CO\textsubscript{2} across which dissolution can occur, whereas at high saturations, the dissolution rate should decrease due to the decreased availability of neighbouring brine into which CO\textsubscript{2} can dissolve. $R(s, c)$ proposed above being an initially increasing, and then decreasing function of $s$ does crudely capture this requirement. However, since typical values of the residual CO\textsubscript{2} saturation rarely exceed $s_r\simeq0.5$ [cite], we need not capture the behaviour as $s\to1$ in our reaction rate. Hence we settle on the simplest possible saturation dependence (i.e. $a=1, b=0$) and a linear dependence on concentration ($n=1$)
+
+\begin{align}
+\label{eq:Reaction}
+R(c,s) &= \frac{\Delta R}{c_{\text{e}}}s(c_{\text{e}}-c) \\
+\widehat{R}(s, \widehat{c})&\equiv \frac{R}{\Delta R} = s(1-\widehat{c}\,)
+\end{align}
+
+Note that have implicitly assumed a constant equilibrium concentration $c_{\text{e}}$, but in general this could also be a function of pressure and temperature. We revisit this assumption later.
+
+\subsection{Permeability \& porosity}
+
+The permeability is taken to be isotropic with a power-law dependence on porosity 
+
+\begin{align}
+\mathsf{K}(\phi)&=K(\phi)\,\mathsf{I} = K_{\text{ref}}\bigg(\frac{\phi}{\varphi_{\text{ref}}}\bigg)^n\,\mathsf{I} \\
+\widehat{\mathsf{K}}(\widehat{\phi}\,) &\equiv \frac{\mathsf{K}(\phi)}{K_{\text{ref}}} =\widehat{K}(\widehat{\phi}\,)\,\mathsf{I}=\widehat{\phi}\,^n\,\mathsf{I}
+\end{align}
+
+such that $\mathsf{K}=K_{\text{ref}}\,\mathsf{I}$ when $\phi=\varphi_{\text{ref}}$ or equivalently $\widehat{\mathsf{K}}=\mathsf{I}$ when $\widehat{\phi}=1$. Alternatively, in terms of the saturation of capillary-trapped CO\textsubscript{2},
+
+\begin{align}
+\label{eq:PermeabilityPowerLaw}
+\mathsf{K}(s)&=K_{\text{ref}}\bigg(\frac{\varphi(1-s)}{\varphi_{\text{ref}}}\bigg)^n\,\mathsf{I} \\
+\widehat{\mathsf{K}}(s)&=(\widehat{\varphi}(1-s))^n\,\mathsf{I} 
+\end{align}
+
+We use a quadratic power law (i.e. $n=2$) and assume a homogeneous rock formation such that $\varphi=\varphi_{\text{ref}}$ is constant or equivalently $\widehat{\varphi}=1$.
+
+\subsection{Solutal dispersion}
+
+We neglect any dependance of the solutal dispersion on the Darcy velocity $\textbf{u}$, in effect assuming that molecular diffusion dominates over hydrodynamic dispersion, and model the dispersion by the linear, isotropic relation 
+
+\begin{align}
+\mathsf{D}(\phi) &= D(\phi)\,\mathsf{I}=D_{\text{ref}}\frac{\phi}{\varphi_{\text{ref}}}\,\mathsf{I} \\
+\widehat{\mathsf{D}}(\widehat{\phi}) &\equiv \frac{\mathsf{D}(\phi)}{D_{\text{ref}}}=\widehat{D}(\widehat{\phi})\,\mathsf{I}=\widehat{\phi}\,\mathsf{I} 
+\end{align}
+
+such that $\mathsf{D}=D_{\text{ref}}\,\mathsf{I}$ when $\phi=\varphi_{\text{ref}}$ or equivalently $\widehat{\mathsf{D}}=\mathsf{I}$ when $\widehat{\phi}=1$. Alternatively, in terms of the saturation of capillary-trapped CO\textsubscript{2},
+
+\begin{align}
+\label{eq:Dispersion}
+\mathsf{D}(s) &= D_{\text{ref}}\frac{\varphi(1-s)}{\varphi_{\text{ref}}}\,\mathsf{I} \\
+\widehat{\mathsf{D}}(s) &=\widehat{\varphi}(1-s)\,\mathsf{I}
+\end{align}
+
+We may relate the reference dispersion to the molecular solutal diffusivity by $D_{\text{ref}}=\varphi_{\text{ref}}D_{\text{mol}}$. Since $\mathsf{D}$ is isotropic, the concentration's no-flux boundary condition simplifies to 
+
+\begin{align}
+(\textbf{n}\cdot\nabla c)\vert_{\partial\Omega} = 0 
+\end{align}
+
+\subsection{Non-dimensional governing equations}
+
+We choose for the length scale $\mathcal{L}=\mathcal{L}_\Omega=H$ the vertical extent of the domain, set the velocity scale $\mathcal{U}=K_{\text{ref}}\,g\Delta\rho/\mu_{\text{ref}}$ to the Darcy speed and construct the time scale $\mathcal{T}=\varphi_{\text{ref}}\mathcal{L}/\mathcal{U}$. With reference to equations \eqref{eq:EpsZeroSoluteTransport}-\eqref{eq:EpsZeroEvolution} this implies the mapping $\{\text{Ad}, \text{Pe}, \text{Ki}, \text{Bu}\}\mapsto\{1, \text{Ra}, \text{Da}, 1\}$. We now drop the hats from the non-dimensional variables to write as our non-dimensional governing equations for this chapter
+
+\begin{align}
+\label{eq:SolutalTransportHorizontal2D}
+(1-s)\frac{\partial c}{\partial t}+\textbf{u}\cdot\nabla c&=\frac{1}{Ra}\nabla\cdot[(1-s)\nabla c]+Da\,s(1-c)\\
+\label{eq:ContinuityHorizontal2D}
+\nabla\cdot\textbf{u}&=0\\
+\label{eq:DarcyHorizontal2D}
+\textbf{u}&=-(1-s)^2(\nabla p+c\,\textbf{e}_y) \\
+\label{eq:EvolutionHorizontal2D}
+\frac{\partial s}{\partial t}&=-\varepsilon Da\,s(1-c)
+\end{align}
+
+with \eqref{eq:ContinuityHorizontal2D} and \eqref{eq:DarcyHorizontal2D} being replaced by 
+
+\begin{align}
+\label{eq:ConstitutiveStreamfunction}
+\nabla\cdot\bigg(\frac{\nabla\psi}{(1-s)^2}\bigg)&=\frac{\partial c}{\partial x}
+\end{align}
+
+in the streamfunction formualation.

@@ -1,0 +1,253 @@
+## Diagnostic equations
+
+### Overview
+
+We refer to the quantities $(\theta, c, \textbf{u}, p, s)$ or $(\theta, c, \psi, \textbf{u}, p, s)$ obtained by direct numerical solution of to \eqref{eq:NonDimensionalHeatTransport}-\eqref{eq:DimensionalSoluteTransport} as primary quantities. Our postprocessing and modelling shall also make use of a number of so-called secondary quantities, derived from the primary quantities. For convenience and to avoid repetition in future chapters, we briefly define in this section some of these secondary quantities, and any methodology behind their computation. Some secondary quantities are amenable to being computed and saved `on-the-fly' during the course of a numerical simulation, whereas others are better suited to being computed at the postprocess stage, for example using a third-party package from the scientific Python ecosystem or third-party visualization software such as ParaView [cite]. A summary of these quantities is tabulated in Table \ref{tab:SecondaryData}.
+
+\begin{table}[ht]
+\centering
+\begin{tabular}{|l|l|l|cl}
+\cline{1-3}
+Symbol & Description & Method\\ \cline{1-3}
+$\min_{\textbf{x}}|\textbf{u}|$, $\max_{\textbf{x}}|\textbf{u}|$  &  minimum and maximum speed & \eqref{eq:MinimumVector}, \eqref{eq:MaximumVector} &   \\ \cline{1-3}
+$\max_{\textbf{x}}(q)$, $\min_{\textbf{x}}(q)~\forall q\in\{\theta, c, s\}$  &  minimum and maximum of scalar fields & \eqref{eq:MinimumScalar}, \eqref{eq:MaximumScalar} &   \\ \cline{1-3}
+$\langle q\rangle~\forall q\in\{\theta, c, s\}$  &  spatial-average of scalar fields & \eqref{eq:MinimumScalar}, \eqref{eq:SubdomainAverage} &   \\ \cline{1-3}
+$m_C$  &  capillary-trapped CO$_2$ mass &  \eqref{eq:MassCapillaryTrapped} &   \\ \cline{1-3}
+$m_D$  &  dissolved CO$_2$ mass  & \eqref{eq:MassDissolved} &  \\ \cline{1-3}
+$J$  &  thermal flux &  \eqref{eq:ThermalFlux} &   \\ \cline{1-3}
+$F$  &  solutal flux & \eqref{eq:SolutalFlux} &  \\ \cline{1-3}
+$N_{\uparrow\downarrow}$  &  number of plumes  &  &  \\ \cline{1-3}
+$u_{\uparrow\downarrow}$  &  average vertical velocity of plumes  &  &  \\ \cline{1-3}
+$w_{\uparrow\downarrow}$  &  average width of plumes  &  &  \\ \cline{1-3}
+$k_P$  &  plume wavenumber &  &  \\ \cline{1-3}
+\end{tabular}
+\caption{A summary of secondary quantities}
+\label{tab:SecondaryData}
+\end{table}
+
+### Global minima \& maxima
+
+Tracking the global minima and maxima of the temperature, concentration and velocity over the course of a numerical simulation is useful from both a physical and numerical perspective. Physically, we can identify certain behaviours, such as the onset of convection or attainment of an equilibrium state, from a timeseries plot of these scalar quantities. With the above discussion of numerical stability in mind, tracking minima and maxima of the temperature and concentration also serves as a diagnostic tool to detect spurious oscillations resulting in unphysical values outside of the physically-permitted range.
+
+To demonstrate the computation of global minima and maxima, consider as examples the scalar-valued temperature $\theta^{n}=\sum_j\theta^{n}_j\xi_j$ and vector-valued velocity $\textbf{u}^n=\sum_ju^n_j\boldsymbol\xi_j$. In the scalar-valued case, we first interpolate $\theta^n$ into the $\text{P}_1$ finite element function space, unless it is already the case that $\xi_j=\xi_j^{\text{P}_1}$, to obtain $(\theta^{\text{P}_1})^{n}=\sum_j(\theta^{\text{P}_1})_j^n\xi_j^{\text{P}_1}$. Then we have
+
+\begin{align}
+\label{eq:MinimumScalar}
+\min_{\textbf{x}}(\theta^n) &= \min_j\{(\theta^{\text{P}_1})_j^n\} \\
+\label{eq:MaximumScalar}
+\max_{\textbf{x}}(\theta^n) &= \max_j\{(\theta^{\text{P}_1})_j^n\}
+\end{align}
+
+In the case of a $d$-dimensional vector, we interpolate to a $\text{P}_1^d$ vector space to obtain 
+
+\begin{align}
+(\textbf{u}^{\text{P}_1})^n = \sum_j
+\begin{pmatrix}
+(u_x^{\text{P}_1})_j^n \\
+(u_y^{\text{P}_1})_j^n \\
+\vdots
+\end{pmatrix}\xi_j^{\text{P}_1}
+\end{align}
+
+Denoting by $|\cdot|$ the Euclidean vector norm, we have
+
+\begin{align}
+\label{eq:MinimumVector}
+\min_{\textbf{x}}|\textbf{u}^n| &= \min_j\bigg\{\sqrt{|(u_x^{\text{P}_1})_j^n|^2 + |(u_y^{\text{P}_1})_j^n|^ +\dots}^{1/2}\bigg\} \\
+\label{eq:MaximumVector}
+\max_{\textbf{x}}|\textbf{u}^n| &= \max_j\bigg\{\sqrt{|(u_x^{\text{P}_1})_j^n|^2 + |(u_y^{\text{P}_1})_j^n|^ +\dots}^{1/2}\bigg\}
+\end{align}
+
+In the case of a $d$-dimensional vector-valued quantity $\textbf{u}=\sum_jU_j\boldsymbol\xi_j$ with vector-valued basis functions $\{\boldsymbol\xi_j\}$, the function must first be interpolated to a $\text{P}_1^d$ vector space (if not already in such a space) and then the scalar-valued components extracted as $(u_x, u_y, \dots) = \sum_j(U^x_j, U^y_j, \dots)\xi_j^{\text{P}_1}$. Using the conventional  Euclidean norm, the global maximum is 
+
+\begin{equation}
+\max_{\textbf{x}}|\textbf{u}|=\max_j\{\sqrt{(U^x_j)^2 + (U^y_j)^2+\dots}^{1/2}\}
+\end{equation}
+
+and similarly for the global minimum. In our simulation we keep track not only of $\max_{\textbf{x}}|\textbf{u}|$, but also $\min_{\textbf{x}}|\textbf{u}|$, $\max_{\textbf{x}}(c)$, $\min_{\textbf{x}}(c)$, $\max_{\textbf{x}}(s)$ and $\min_{\textbf{x}}(s)$ as diagnostic quantities for both the providing insights into both the flow behaviour and validity of the numerical solution. Physically, extrema of the concentration field should obey the constraint $0\leq c\leq1$ at all times, and likewise for the saturation field $0\leq s\leq s_r$. These constraints can be verified by a timeseries plot during postprocessing, or alternatively used during the course of the simulation to terminate a simulation producing spurious results.
+
+### Spatial averages
+
+The spatial average of a quantity, over either a subdomain $\varpi\subset\Omega$ or spatial coordinate, will be relevant to a number of postprocessing calculations. We denote the operation of spatial averaging in `bra-ket' notation as
+
+\begin{align}
+\label{eq:SubdomainAverage}
+\langle \theta\rangle_\varpi(t) = \frac{1}{\text{vol}(\varpi)}\int_{\textbf{x}\in\varpi} \theta(\textbf{x}, t)~\text{d}\Omega
+\end{align}
+
+over a subdomain. In the case that $\Omega$ is a rectangule (spanned by $x, y$) or a cuboid (spanned by $x, y, z$), we define the horizontal average as 
+
+\begin{align}
+\label{eq:HorizontalAverage2D}
+\langle \theta\rangle_{x_1<x<x_2}(y, t) &= \frac{1}{x_2-x_1}\int_{x_1}^{x_2} \theta(x, y, t)~\text{d}x \\
+\label{eq:HorizontalAverage3D}
+\langle \theta\rangle_{x_1<x<x_2, y_1<y<y_2}(z, t) &= \frac{1}{(x_2-x_1)(y_2-y_1)}\int_{y_1}^{y_2}\int_{x_1}^{x_2} \theta(x, y, z, t)~\text{d}x\text{d}y 
+\end{align}
+
+### CO$_2$ mass
+
+Our model of the dissolution of capillary-trapped CO$_2$ contains two contributions to the total amount of geologically-sequestered CO$_2$: the capillary-trapped mass
+
+\begin{align}
+\label{eq:MassCapillaryTrapped}
+m_C(t) &= \frac{1}{\varepsilon}\int_{\textbf{x}\in\Omega} s(\textbf{x}, t)~\text{d}\Omega
+&=\frac{1}{\varepsilon}\int_0^L\int_{h(x, t)}^1 s(x,y, t)~\text{d}y\,\text{d}x\
+\end{align}
+
+and the dissolved mass
+
+\begin{align}
+\label{eq:MassDissolved}
+m_D(t) &= \int_{\textbf{x}\in\Omega}(1-s(\textbf{x}, t))c(\textbf{x}, t)~\text{d}\Omega \\
+&=\int_0^L\int_0^1(1-s(x,y, t))c(x,y,t)~\text{d}y\,\text{d}x
+\end{align}
+
+In a closed domain (i.e. no-flux boundary conditions everywhere on $\partial\Omega$), the total mass $m_C(t)+m_D(t)$ is a conserved quantity. The computation of domain integrals such as \eqref{eq:MassCapillaryTrapped} and \eqref{eq:MassDissolved} is inexpensive and readily handled by the FEniCS library so the computation of $m_C$ and $m_D$ can be performed during the course of the numerical simulation. 
+
+### Flux
+
+We define the solutal and thermal fluxes, split into their advective and diffusive components, across a contour $\Gamma$ respectively as
+
+\begin{align}
+\label{eq:ThermalAdvectiveFlux}
+J_A(t;\Gamma) & = \int_\Gamma\text{d}\Gamma~\textbf{n}\cdot\textbf{u}\,\theta\\
+\label{eq:ThermalDiffusiveFlux}
+J_D(t;\Gamma)  & = \int_\Gamma\text{d}\Gamma~ \frac{1}{Rb}\,\textbf{n}\cdot(\mathsf{G}\cdot\nabla\theta) \\
+\label{eq:SolutalAdvectiveFlux}
+F_A(t;\Gamma) & = \int_\Gamma\text{d}\Gamma~\textbf{n}\cdot\textbf{u}\,c\\
+\label{eq:SolutalDiffusiveFlux}
+F_D(t;\Gamma)  & = \int_\Gamma\text{d}\Gamma~ \frac{1}{Ra}\,\textbf{n}\cdot(\mathsf{D}\cdot\nabla c)
+\end{align}
+
+and the corresponding total fluxes 
+
+\begin{align}
+\label{eq:ThermalFlux}
+J(t;\Gamma)=J_A(t;\Gamma)+J_D(t;\Gamma) \\
+\label{eq:SolutalFlux}
+F(t;\Gamma)=F_A(t;\Gamma)+F_D(t;\Gamma)
+\end{align}
+
+As with the above domain integrals for CO$_2$ mass, the FEniCS library computes contour integrals such as \eqref{eq:ThermalAdvectiveFlux}-\eqref{eq:SolutalDiffusiveFlux} with ease, provided that the contour $\Gamma$ lies on the mesh's cell facets.
+
+
+### Events
+
+As alluded to in our discussion of minima and maxima, we can identify from the timeseries $q(t)$ of some scalar-valued quantity certain specific times at which physically-interesting behaviours or regime changes occur. We shall refer any such specific times as an `event'. For example, one possible definition for the onset of convection
+
+\begin{align}
+t_{\text{onset};\epsilon}=\underset{t}{\text{argmin}}\{\max_{\textbf{x}}|\textbf{u}|(t)~:~\max_{\textbf{x}}|\textbf{u}|(t) > \epsilon\}
+\end{align}
+
+which corresponds to the time when the maximum speed first exceeds some small threshold value $0<\epsilon\ll 1$. In a similar vein the shutdown of convection would be
+
+\begin{align}
+t_{\text{shut};\epsilon}=\underset{t}{\text{argmax}}\{\max_{\textbf{x}}|\textbf{u}|(t)~:~\max_{\textbf{x}}|\textbf{u}|(t) > \epsilon\}
+\end{align}
+
+for when the maximum speed lass exceeds the threshold value. We defer the defition of further scenario-specific events to later chapters.
+
+\begin{table}[ht]
+\centering
+\begin{tabular}{|l|l|}
+\cline{1-2}
+Event Description & Definition \\ \cline{1-2}
+onset of convection &  $t_{\text{onset};\epsilon}=\underset{t}{\text{argmin}}\{\max_{\textbf{x}}|\textbf{u}|~:~\max_{\textbf{x}}|\textbf{u}| > \epsilon\}$   \\ \cline{1-2}
+shutdown of convection  &  $t_{\text{shut};\epsilon}=\underset{t}{\text{argmax}}\{\max_{\textbf{x}}|\textbf{u}|~:~\max_{\textbf{x}}|\textbf{u}| > \epsilon\}$\\ \cline{1-2}
+plumes reach bottom boundary of domain & $t_{\text{bottom};\epsilon}=\underset{t}{\text{argmin}}\{\max_x c(x,y=0,t)~:~\max_x c(x,0,t)> \epsilon\}$  \\ \cline{1-2}
+average concentration rises to value & $t_{\text{eq};c^*}=\underset{t}{\text{argmin}}\{\langle c\rangle_{\Omega}~:~\langle c\rangle_{\Omega} \geq c^* \}$  \\ \cline{1-2}
+average saturation reaches drops to value & $t_{\text{diss};s*}=\underset{t}{\text{argmin}}\{\langle s\rangle_{\Omega^+}~:~\langle s\rangle_{\Omega^+} \leq s^*\}$  \\ \cline{1-2}
+\end{tabular}
+\caption{Events}
+\label{tab:Events}
+\end{table}
+
+### Plume statistics
+
+We identify a set of solutal plumes as the contour at which concentration $c$ is either equal to some specified value $\alpha$
+
+\begin{equation}
+\Gamma_{P_c}(t;\alpha)=\big\{\textbf{x}\in\Omega~:~c(\textbf{x},t)=\alpha\big\}
+\end{equation}
+
+or a value at a fraction $0\leq f\leq1$ of its instantaneous range $[\min_{\textbf{x}}c, \max_{\textbf{x}}c]$
+
+\begin{equation}
+\Gamma_{P_c}(t;f)=\big\{\textbf{x}\in\Omega~:~c(\textbf{x},t)=f\min_{\textbf{x}}c(\textbf{x},t)+(1-f)\max_{\textbf{x}}c(\textbf{x},t)\big\}
+\end{equation}
+
+Likewise we define thermal plumes $\Gamma_{P_\theta}(t;\alpha)$ and $\Gamma_{P_\theta}(t;f)$ with $\theta$ replacing $c$ in the above contour definitions. Plume tips are then defined respectively as the set of cooordinates of the contour's local maxima and minima with respect to a coordinate $x_P$ aligned with the direction of plume motion. In the case of plumes arising from fluid density contrasts, gravity is evidently the driving force for plume motion so $x_P=-\textbf{e}_g\cdot\textbf{x}$, which would simply be $x_P=y$ for  a horizontal 2D domain and $x_P=z$ for a horizontal 3D domain. Hence for buoyant plumes we identify the ascending ($\uparrow$) and descending ($\downarrow$) plume tips at time $t$ as
+
+\begin{align}
+\{\textbf{x}^{\uparrow\,j}(t)\}_{j=1}^{N^\uparrow(t)} &= \{\textbf{x}~:~\textbf{x}\in\underset{x_P}{\text{locmax}}~\Gamma_{P}(t)\} \\
+\{\textbf{x}^{\downarrow\,j}(t)\}_{j=1}^{N^\downarrow(t)} &= \{\textbf{x}~:~\textbf{x}\in\underset{x_P}{\text{locmin}}~\Gamma_{P}(t)\}
+\end{align}
+
+where $N^{\uparrow\downarrow}(t)$ is the total number of ascending and descending plumes. The trajectory of the $j^{\text{th}}$ plume tip is given by the sequence of coordinates $\{\textbf{x}^{\uparrow\downarrow\,j}(t^n)\}_n$ for all times $t^n$ in the time interval characterising the $j^{\text{th}}$ plume tip's lifetime (i.e. when that particular local maximum or minimum exists). The velocity of the $j^{\text{th}}$ plume tip is given by
+
+\begin{align}
+u^{\uparrow\downarrow\,j}(t)=\frac{\text{d}}{\text{d}t}(x_P^{\uparrow\downarrow\,j}(t))
+\end{align}
+
+so the average ascending and descending plume tip velocity is
+
+\begin{align}
+\label{eq:PlumeVelocity}
+u^{\uparrow\downarrow}(t)=\frac{1}{N_{\uparrow\downarrow}(t)}\sum_{j=1}^{N_{\uparrow\downarrow}}u^{\uparrow\downarrow\,j}(t)
+\end{align}
+
+The following calculations of plume width and wavenumber are generalizable to 3D but for clarity in our exposition we now consider a horizontal 2D domain. Given a fixed reference height $y_{\text{ref}}$, we compute the width of the $j^{\text{th}}$ plume by first defining its vertical extent as $y_{\text{ref}}\leq y\leq y^{\uparrow\downarrow\,j}$ or  $y^{\uparrow\downarrow\,j}\leq y\leq y_{\text{ref}}$ in the case of ascending and descending plumes respectively. Next we set the height at which to measure to measure its width as $h_j=f\min(y^{\uparrow\downarrow\,j}, y_{\text{ref}}) + (1-f)\max(y^{\uparrow\downarrow\,j}, y_{\text{ref}})$ for some fraction $0\leq f\leq1$. By determining the coordinates $(x_-^{\uparrow\downarrow\,j}, h_j)$ and $(x_+^{\uparrow\downarrow\,j}, h_j)$ where the local plume contour intersects the horizontal line $y=h_j$, we deduce the plume width $w^{\uparrow\downarrow\,j}=x_+^{\uparrow\downarrow\,j} - x_-^{\uparrow\downarrow\,j}$. Similarly to \eqref{eq:PlumeVelocity} the average ascending and descending plume width is
+
+\begin{align}
+\label{eq:PlumeWidth}
+w^{\uparrow\downarrow}(t)=\frac{1}{N_{\uparrow\downarrow}(t)}\sum_{j=1}^{N_{\uparrow\downarrow}}w_{P}^j(t)
+\end{align}
+
+The instantaneous solutal plume wavenumber at height $y$
+
+\begin{align}
+k_{P_c}(y,t)=\frac{\int~k'\mathbb{P}_c(k';y,t)\text{d}k'}{\int\mathbb{P}_c(k';y,t)\text{d}k}
+\end{align}
+
+is the expectation value of the power spectrum 
+
+\begin{align}
+\mathbb{P}_c(k';y,t)=\lim_{T\to\infty}\frac{1}{T}\int|\hat{c}(k';y,t)|^2~\text{d}k'
+\end{align} 
+
+of the Fourier-transformed concentration $\hat{c}(k';y,t)$. Finally we denote by $\overline{k_{P_c}(y)}^{_{t,t'}}$ the time-averaged wavenumber at height $y$ over an interval $t\in[t, t']$. The thermal plume wavenumber $k_{P_\theta}(y,t)$ is likewise defined from the temperature $\theta$.
+
+### Reaction front
+
+Recall from \ref{sec:SolutalModel} that we identify the reaction front height $h(x,t)$ as the curve partitioning the domain $\Omega$ into a reacted lower region $\Omega^-(t)$ where $s=0$ and an unreacted upper region $\Omega^+(t)$ having $0<s\leq s_r$. Mathematically, this is defined as the countour
+
+\begin{align}
+\Gamma_R(t)=\{(x,y)\in\Omega~:~s(x,y,t)=0 \iff y=h(x,t)\}	
+\end{align}
+
+
+though numerically we search using the \texttt{skimage} package's contour finder for $\Gamma_R(t;\epsilon_R)=\{(x,y)\in\Omega~:~s=\epsilon_R\}$ with some small tolerance $0<\epsilon_R\ll1$ to obtain $h(x,t;\epsilon_R)$. This method requires $s$ to be represented by a \texttt{numpy} array data structure so computation is deferred to the postprocess stage. To quantify the nonlinear deformation of the initially horizontal reaction front as time progresses, we compute its normalized arc length
+
+\begin{align}
+\text{len}(h) = \frac{1}{L}\int_0^L\sqrt{1+\bigg(\frac{\partial h}{\partial x}\bigg)^2}~\text{d}x\geq1
+\end{align}
+
+and standard deviation
+
+\begin{align}
+\text{sdev}(h)= \bigg(\frac{1}{L}\int_0^L(h - \langle h\rangle_x)^2~\text{d}x\bigg)^{1/2}\geq0
+\end{align}
+
+
+from the horizontally-averaged height $\langle h\rangle_x=\frac{1}{L}\int_0^L h(x,t)~\text{d}t$
+
+### Fluid front
+
+Accompanying the concept of a reaction front, we have the fluid-fluid front, which for simplicity we abbreviate to fluid front, separating fluid rising into the unreacted upper region from the fluid at equilibrium concentration above it. As above, we define this mathematically as 
+
+$$\Gamma_F(t)=\{(x,y)\in\Omega~:~c(x,y,t)=1 \iff y=h_F(x,t)\}$$
+
+and implement it numerically with a small tolerance $0<\epsilon_F\ll1$ such that \texttt{skimage} searches for the contour $\Gamma_F(t;\varepsilon_F)=\{(x_i,y_i)\in\Omega_{N_x,N_y}~:~c=1-\epsilon_F\}$
+
+
+

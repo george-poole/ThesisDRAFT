@@ -30,8 +30,8 @@ ul.task-list li input[type="checkbox"] {
 <script src="site_libs/quarto-search/fuse.min.js"></script>
 <script src="site_libs/quarto-search/quarto-search.js"></script>
 <meta name="quarto:offset" content="./">
-<link href="./chapter3.html" rel="next">
-<link href="./chapter1.html" rel="prev">
+<link href="./chapter03.html" rel="next">
+<link href="./chapter01.html" rel="prev">
 <script src="site_libs/quarto-html/quarto.js" type="module"></script>
 <script src="site_libs/quarto-html/tabsets/tabsets.js" type="module"></script>
 <script src="site_libs/quarto-html/axe/axe-check.js" type="module"></script>
@@ -119,7 +119,7 @@ window.Quarto = {
       <button type="button" class="quarto-btn-toggle btn" data-bs-toggle="collapse" role="button" data-bs-target=".quarto-sidebar-collapse-item" aria-controls="quarto-sidebar" aria-expanded="false" aria-label="Toggle sidebar navigation" onclick="if (window.quartoToggleHeadroom) { window.quartoToggleHeadroom(); }">
         <i class="bi bi-layout-text-sidebar-reverse"></i>
       </button>
-        <nav class="quarto-page-breadcrumbs" aria-label="breadcrumb"><ol class="breadcrumb"><li class="breadcrumb-item"><a href="./chapter2.html"><span class="chapter-number">2</span>&nbsp; <span class="chapter-title">Governing equations for the dissolution of capillary-trapped CO<span class="math inline">\(_2\)</span></span></a></li></ol></nav>
+        <nav class="quarto-page-breadcrumbs" aria-label="breadcrumb"><ol class="breadcrumb"><li class="breadcrumb-item"><a href="./chapter02.html"><span class="chapter-number">2</span>&nbsp; <span class="chapter-title">Governing equations for the dissolution of capillary-trapped CO<span class="math inline">\(_2\)</span></span></a></li></ol></nav>
         <a class="flex-grow-1" role="navigation" data-bs-toggle="collapse" data-bs-target=".quarto-sidebar-collapse-item" aria-controls="quarto-sidebar" aria-expanded="false" aria-label="Toggle sidebar navigation" onclick="if (window.quartoToggleHeadroom) { window.quartoToggleHeadroom(); }">      
         </a>
       <button type="button" class="btn quarto-search-button" aria-label="Search" onclick="window.quartoOpenSearch();">
@@ -170,20 +170,20 @@ window.Quarto = {
 </li>
         <li class="sidebar-item">
   <div class="sidebar-item-container"> 
-  <a href="./chapter1.html" class="sidebar-item-text sidebar-link">
+  <a href="./chapter01.html" class="sidebar-item-text sidebar-link">
  <span class="menu-text"><span class="chapter-number">1</span>&nbsp; <span class="chapter-title">Introduction</span></span></a>
   </div>
 </li>
         <li class="sidebar-item">
   <div class="sidebar-item-container"> 
-  <a href="./chapter2.html" class="sidebar-item-text sidebar-link active">
+  <a href="./chapter02.html" class="sidebar-item-text sidebar-link active">
  <span class="menu-text"><span class="chapter-number">2</span>&nbsp; <span class="chapter-title">Governing equations for the dissolution of capillary-trapped CO<span class="math inline">\(_2\)</span></span></span></a>
   </div>
 </li>
         <li class="sidebar-item">
   <div class="sidebar-item-container"> 
-  <a href="./chapter3.html" class="sidebar-item-text sidebar-link">
- <span class="menu-text"><span class="chapter-number">3</span>&nbsp; <span class="chapter-title">Numerical software</span></span></a>
+  <a href="./chapter03.html" class="sidebar-item-text sidebar-link">
+ <span class="menu-text"><span class="chapter-number">3</span>&nbsp; <span class="chapter-title">Numerical methods</span></span></a>
   </div>
 </li>
         <li class="sidebar-item">
@@ -221,10 +221,6 @@ window.Quarto = {
   <li><a href="#plume-statistics" id="toc-plume-statistics" class="nav-link" data-scroll-target="#plume-statistics"><span class="header-section-number">2.3.7</span> Plume statistics</a></li>
   <li><a href="#reaction-front" id="toc-reaction-front" class="nav-link" data-scroll-target="#reaction-front"><span class="header-section-number">2.3.8</span> Reaction front</a></li>
   <li><a href="#fluid-front" id="toc-fluid-front" class="nav-link" data-scroll-target="#fluid-front"><span class="header-section-number">2.3.9</span> Fluid front</a></li>
-  </ul></li>
-  <li><a href="#numerical-methods" id="toc-numerical-methods" class="nav-link" data-scroll-target="#numerical-methods"><span class="header-section-number">2.4</span> Numerical methods</a>
-  <ul class="collapse">
-  <li><a href="#discretization-in-time" id="toc-discretization-in-time" class="nav-link" data-scroll-target="#discretization-in-time"><span class="header-section-number">2.4.1</span> Discretization in time</a></li>
   </ul></li>
   </ul>
 </nav>
@@ -743,118 +739,6 @@ k_{P_c}(y,t)=\frac{\int~k'\mathbb{P}_c(k';y,t)\text{d}k'}{\int\mathbb{P}_c(k';y,
 <p>Accompanying the concept of a reaction front, we have the fluid-fluid front, which for simplicity we abbreviate to fluid front, separating fluid rising into the unreacted upper region from the fluid at equilibrium concentration above it. As above, we define this mathematically as</p>
 <p><span class="math display">\[\Gamma_F(t)=\{(x,y)\in\Omega~:~c(x,y,t)=1 \iff y=h_F(x,t)\}\]</span></p>
 <p>and implement it numerically with a small tolerance <span class="math inline">\(0&lt;\epsilon_F\ll1\)</span> such that searches for the contour <span class="math inline">\(\Gamma_F(t;\varepsilon_F)=\{(x_i,y_i)\in\Omega_{N_x,N_y}~:~c=1-\epsilon_F\}\)</span></p>
-</section>
-</section>
-<section id="numerical-methods" class="level2" data-number="2.4">
-<h2 data-number="2.4" class="anchored" data-anchor-id="numerical-methods"><span class="header-section-number">2.4</span> Numerical methods</h2>
-<section id="discretization-in-time" class="level3" data-number="2.4.1">
-<h3 data-number="2.4.1" class="anchored" data-anchor-id="discretization-in-time"><span class="header-section-number">2.4.1</span> Discretization in time</h3>
-<p>To solve <span class="math inline">\(\eqref{eq:NonDimensionalHeatTransport}\)</span>-<span class="math inline">\(\eqref{eq:NonDimensionalEvolution}\)</span> numerically, we use the finite element method in space with finite differences in time taken before discretization in space. Denoting by <span class="math inline">\(t^n\)</span>, <span class="math inline">\(\Delta t^n\)</span> the time and timestep at the <span class="math inline">\(n^{\text{th}}\)</span> step of the numerical integration, such that <span class="math inline">\(\theta(\textbf{x}, t^n)\approx\theta^n(\textbf{x})\)</span> and the initial time is <span class="math inline">\(t^0=0\)</span>, the discretized system at the <span class="math inline">\(n^{\text{th}}\)</span> step is</p>
-<p><span class="math display">\[\begin{align}
-\label{eq:FiniteDifferenceHeatTransport}
-\mathcal{D}_\phi(\phi)\frac{\theta^{n+1} - \theta^n}{\Delta t^n} + \mathcal{D}_{A,\theta}(\textbf{u}\cdot\nabla\theta) &amp;= \frac{1}{Rb}\nabla\cdot\mathcal{D}_{D,\theta}(\mathsf{G}\cdot\nabla\theta) \\
-\label{eq:FiniteDifferenceSoluteTransport}
-\mathcal{D}_\phi(\phi)\frac{c^{n+1} - c^n}{\Delta t^n} + \mathcal{D}_{A,c}(\textbf{u}\cdot\nabla c) &amp;= \frac{1}{Ra}\nabla\cdot\mathcal{D}_{D,c}(\mathsf{D}\cdot\nabla c) + Da\,\mathcal{D}_{R,c}(R) \\
-\label{eq:FiniteDifferenceContinuity}
-\nabla\cdot\textbf{u}^n &amp;= 0 \\
-\label{eq:FiniteDifferenceDarcy}
-\textbf{u}^n &amp;= - \frac{\mathsf{K}^n}{\mu^n}(\nabla p^n +\rho^n\textbf{e}_g) \\
-\label{eq:FiniteDifferenceEvolution}
-\varphi\frac{s^{n+1} - s^n}{\Delta t^n} &amp;= -\varepsilon Da\mathcal{D}_{R,s}(R)
-\end{align}\]</span></p>
-<p>and is to be solved for <span class="math inline">\(\theta^{n+1}\)</span> <span class="math inline">\(c^{n+1}\)</span>, <span class="math inline">\(\textbf{u}^n\)</span>, <span class="math inline">\(p^n\)</span> and <span class="math inline">\(s^{n+1}\)</span>. <span class="math inline">\(\mathcal{D}\)</span> denotes a finite difference operator acting on a time-dependent quantity or expression to produce a discretization in time. For example, a second-order Adams-Bashforth operator <span class="math inline">\(\mathcal{D}=\text{AB}_2\)</span> produces</p>
-<p><span class="math display">\[\begin{align}
-\text{AB}_2(\theta)=\frac{3}{2}\theta^n - \frac{1}{2}\theta^{n-1}
-\end{align}\]</span></p>
-<p>which is explicit with respect to <span class="math inline">\(\theta\)</span>, and the backward Euler operator <span class="math inline">\(\mathcal{D}=\text{BE}\)</span> produces</p>
-<p><span class="math display">\[\begin{align}
-\text{BE}(\theta)=\theta^{n+1}
-\end{align}\]</span></p>
-<p>which is implicit with respect to <span class="math inline">\(\theta\)</span> since <span class="math inline">\(\theta^{n+1}\)</span> is being solved for. A general finite difference operator can be defined as producing a linear superposition of future, present and previous values of the time-dependent quantity of expression</p>
-<p><span class="math display">\[\begin{align}
-\mathcal{D}(\theta) = \sum_{j\leq 1}\alpha_j\theta^{n+j}
-\end{align}\]</span></p>
-<p>according to its set of constant coefficients <span class="math inline">\(\{\alpha_j\}\)</span>. Note that <span class="math inline">\(\alpha_1=0\)</span> produces an explicit discretization. When discretizing an expression, such as the advection <span class="math inline">\(a(\textbf{u}, \theta)=\textbf{u}\cdot\nabla\theta\)</span>, it possible to discretize expression-wise as</p>
-<p><span class="math display">\[\begin{align}
-\mathcal{D}(a(\textbf{u}, \theta)) = \sum_{j\leq 1}\alpha_ja(\textbf{u}^{n+j}, \theta^{n+j})
-\end{align}\]</span></p>
-<p>or if <span class="math inline">\(\mathcal{D}\)</span> is specified as the tuple <span class="math inline">\((\mathcal{D}_{\textbf{u}}, \mathcal{D}_\theta)\)</span> then we discretize argument-wise as</p>
-<p><span class="math display">\[\begin{align}
-(\mathcal{D}_{\textbf{u}}, \mathcal{D}_\theta)(a(\textbf{u}, \theta)) = a(\mathcal{D}_{\textbf{u}}(\textbf{u}), \mathcal{D}_\theta(\theta))
-\end{align}\]</span></p>
-<p>In our programming of a numerical solution we avoid hard-coding any particular finite difference discretizations, instead allowing each <span class="math inline">\(\mathcal{D}\)</span> to be specified as an input parameter to the numerical simulation program. A more detailed discussion of our implementation is deferred to <span class="math inline">\(\ref{chap:Software}\)</span>.</p>
-<p>To satisfy stability criteria with respect to both advection and reaction, the timestep <span class="math inline">\(\Delta t^n\)</span> must be computed adaptively at each step by choosing whicever is smallest between the Courant–Friedrichs–Lewy (CFL) and reaction timesteps <span class="math inline">\(\Delta t^n_{\text{CFLR}}\)</span>, <span class="math inline">\(\Delta t^n_R\)</span>. We define such as timestep as</p>
-<p><span class="math display">\[\begin{align}
-\label{eq:Timestep}
-\Delta t^n_{\text{CFLR}} &amp;= \min\{C_{\text{CFL}}\Delta t^n_{\text{CFL}}, C_R\Delta t^n_R\}
-\end{align}\]</span></p>
-<p>where</p>
-<p><span class="math display">\[\begin{align}
-\label{eq:TimestepCFL}
-\Delta t^n_{\text{CFL}} &amp;= \min_{\textbf{x}}\bigg(\frac{\ell(\textbf{x})}{|\textbf{u}^n|}\bigg)  \\
-\label{eq:TimestepR}
-\Delta t^n_R &amp;= \frac{1}{\max_{\textbf{x}}(Da|R^n|)}
-\end{align}\]</span></p>
-<p>where <span class="math inline">\(0&lt;C_{\text{CFL}}, C_R\leq 1\)</span> are safety factors and <span class="math inline">\(\ell(\textbf{x})\)</span> is a local measure of mesh cell size (e.g.&nbsp;diameter, circumradius or minimum edge length). Note that in the case of a uniform mesh we have the simplication <span class="math inline">\(\ell(\textbf{x})=\ell\)</span> and hence</p>
-<p><span class="math display">\[\begin{align}
-\label{eq:TimestepUniformCFL}
-\Delta t^n_{\text{CFL}} = \frac{\ell}{\max_{\textbf{x}}|\textbf{u}^n|}
-\end{align}\]</span></p>
-<p>Finally, for practical purposes we also restrict the timestep to a desired range such that <span class="math inline">\(\Delta t_{\text{min}} \leq \Delta^n \leq \Delta t_{\text{max}}\)</span> by implementing</p>
-<p><span class="math display">\[\begin{align}
-\label{eq:TimestepMinMaxCFLR}
-\Delta t^n=\min\{\Delta t_{\text{max}}, \max\{\Delta t_{\text{min}}, \Delta t^n_{\text{CFLR}}\}\}
-\end{align}\]</span></p>
-<p>Rather than solving the entire system <span class="math inline">\(\eqref{eq:FiniteDifferenceHeatTransport}\)</span>-<span class="math inline">\(\eqref{eq:FiniteDifferenceEvolution}\)</span> at once as a nonlinear, mixed finite element problem for <span class="math inline">\(\theta^{n+1}\)</span>, <span class="math inline">\(c^{n+1}\)</span>, <span class="math inline">\(\textbf{u}^n\)</span>, <span class="math inline">\(p^n\)</span> and <span class="math inline">\(s^{n+1}\)</span>, we solve each subsystem in turn as a linear problem. In particular, we note that <span class="math inline">\(\eqref{eq:FiniteDifferenceContinuity}\)</span> and <span class="math inline">\(\eqref{eq:FiniteDifferenceDarcy}\)</span> are level in time and hence the flow subsystem can be solved independently for <span class="math inline">\((\textbf{u}^n, p^n)\)</span>, given <span class="math inline">\(\mathsf{K}^n\)</span>, <span class="math inline">\(\mu^n\)</span> and <span class="math inline">\(\rho^n\)</span> which are in turn given in terms of <span class="math inline">\(\theta^n\)</span>, <span class="math inline">\(c^n\)</span> and <span class="math inline">\(s^n\)</span>. In the streamfunction formulation, <span class="math inline">\(\eqref{eq:FiniteDifferenceContinuity}\)</span> and <span class="math inline">\(\eqref{eq:FiniteDifferenceDarcy}\)</span> are replaced by</p>
-<p><span class="math display">\[\begin{align}
-\label{eq:FiniteDifferenceStreamfunctionPoisson}
-\nabla\cdot\bigg(\frac{\mu^n\,(\mathsf{K}^n)^{\mathsf{T}}\cdot\nabla\psi^n}{\det(\mathsf{K}^n)}\bigg) &amp;= -\frac{\partial(e_g^y\rho^n)}{\partial x}+\frac{\partial(e_g^x\rho^n)}{\partial y} \\
-\label{eq:FiniteDifferenceStreamfunctionVelocity}
-\textbf{u}^n &amp;=
-\begin{pmatrix}
-\frac{\partial\psi^n}{\partial y} \\
--\frac{\partial\psi^n}{\partial x}
-\end{pmatrix}
-\end{align}\]</span></p>
-<p>Once <span class="math inline">\(\textbf{u}^n\)</span> is known, the transport equations <span class="math inline">\(\eqref{eq:FiniteDifferenceHeatTransport}\)</span> and <span class="math inline">\(\eqref{eq:FiniteDifferenceSoluteTransport}\)</span> can be solved in turn, provided that their discretizations are explicit with respect to <span class="math inline">\(\textbf{u}\)</span> and <span class="math inline">\(s\)</span>. The final problem to solve is <span class="math inline">\(\eqref{eq:FiniteDifferenceEvolution}\)</span>, and since <span class="math inline">\(\theta^{n+1}\)</span> and <span class="math inline">\(c^{n+1}\)</span> are known from solving <span class="math inline">\(\eqref{eq:FiniteDifferenceHeatTransport}\)</span> and <span class="math inline">\(\eqref{eq:FiniteDifferenceSoluteTransport}\)</span> in advance, its discretization can be explicit with respect to <span class="math inline">\(\theta\)</span> and <span class="math inline">\(c\)</span>. However if <span class="math inline">\(R(s, c, \theta)\)</span> is nonlinear in <span class="math inline">\(s\)</span> then to obtain a linear problem the discretization must be explicit with respect to <span class="math inline">\(s\)</span>. We list the complete numerical integration algorithm in Algorithm <span class="math inline">\(\ref{alg:NumericalIntegration}\)</span>. More complicated numerical integration algorithms, such as predictor-corrector methods, are also possible for this system but for simplicity we do not pursue such approaches. <!-- 
-\begin{algorithm}
-\caption{Numerical integration of \eqref{eq:FiniteDifferenceHeatTransport}-\eqref{eq:FiniteDifferenceEvolution}}
-\label{alg:NumericalIntegration}
-\begin{algorithmic}[1]
-\\
-Initialize $n\gets 0$ \\
-Initialize $t^n\gets 0$ \\
-Initialize $\theta^n\gets\theta_0$ by \eqref{eq:InitialTemperature} \\
-Initialize $c^n\gets c_0$ by \eqref{eq:InitialSaturation} \\
-Initialize $s^n\gets s_0$ by \eqref{eq:InitialSaturation} 
-\While{$t^n<t_{\text{stop}}$ \textbf{and} $n<n_{\text{stop}}$}\\
-\hspace{12pt} Solve for ($\textbf{u}^n, p^n)$ from \eqref{eq:FiniteDifferenceContinuity} and \eqref{eq:FiniteDifferenceDarcy} 
-or ($\psi^n, \textbf{u}^n)$ from \eqref{eq:FiniteDifferenceStreamfunctionPoisson} and \eqref{eq:FiniteDifferenceStreamfunctionVelocity}
-\If{$n<n_{\text{init}}$} \\
-\hspace{24pt} $\Delta t^n\gets\Delta t_{\text{init}}$ 
-\Else{}\\
-\hspace{24pt} Solve for $\Delta t^n$ from \eqref{eq:TimestepMinMaxCFLR}
-\EndIf \\
-\hspace{12pt} Solve for $\theta^{n+1}$ from \eqref{eq:FiniteDifferenceHeatTransport} \\
-\hspace{12pt} Solve for $c^{n+1}$ from \eqref{eq:FiniteDifferenceSoluteTransport} \\
-\hspace{12pt} Solve for $s^{n+1}$ from \eqref{eq:FiniteDifferenceEvolution} \\
-\hspace{12pt} Update $t^n\gets t^n+\Delta t^n$ \\
-\hspace{12pt} Update $q^{n-j}\gets q^{n-j+1}$ for all $q\in\{\textbf{u}, p, \psi, \Delta t, \theta, c, s, t\}$ and all $j\geq 0$\\
-\hspace{12pt} Update $n\gets n +1$
-\EndWhile
-\end{algorithmic}
-\end{algorithm}
- 
-### Discretization in space
-
-Discretization of the domain in the finite element method amounts to partitioning $\Omega$ into a union of cells $\Omega\approx\cup_{\mathcal{K}}\mathcal{K}$, which can be triangular or quadrilateral in 2D, and tetrahedral or hexahedral in 3D, to form a computational mesh. A mesh is said to be structured if its vertices form a grid, and uniform if the grid spacings are constant. We use the open-source finite element library FEniCS \cite{baratta_dolfinx_2023} for the creation of a mesh, writing of variational forms, and numerical solution of the resulting linear systems. The open-source meshing library Gmsh [cite], which interfaces with FEniCS, is used for meshing more complicated domains, since FEniCS's built-in meshing module only implements intervals (1D), rectangles (2D) and boxes (3D).
-
-Use of the finite element method, rather than alternatices such finite volume, finite difference or spectral methods, is motivated by the abundance of existing general-purpose numerical software for solving PDEs via the finite element method, such as the FEniCS \cite{baratta_dolfinx_2023} and deal.II \cite{arndt_dealii_2021} libraries. The finite element method has a number of strengths making it a sutable candidate for creating a general-purpose solver to \eqref{eq:FiniteDifferenceHeatTransport}-\eqref{eq:FiniteDifferenceEvolution}. Whereas spectral methods, for example as implemented by the Dedalus library [cite], are less capable of handling non-constant coefficients, such as the porosity, permemability and reaction in our governing equations \eqref{eq:FiniteDifferenceHeatTransport}-\eqref{eq:FiniteDifferenceEvolution}, these do not present a difficluty in the finite element method. To model a domain having some complicated or irregular shape, the finite element method can use unstructured mesh whereas spectral or finite difference methods are typically limited to simpler domains (e.g. Cartesian or curvilinear) discretized as a structured grid. We settled on using the FEniCS library \cite{baratta_dolfinx_2023} for our numerical solutions owing to its user-friendly Python application-programming interface (API) which would furthermore facilitate postprocessing of numerical results within the well-established ecosystem of scientific Python packages, including Numpy, SciPy and Matplotlib [cite].
-
-The finite element method requires \eqref{eq:NonDimensionalHeatTransport}-\eqref{eq:NonDimensionalEvolution} to first be written in variational form, which we discuss at length in appendix \ref{chap:FiniteElementFormulation}. Particular attention must be paid to the transport equations \eqref{eq:FiniteDifferenceHeatTransport} and \eqref{eq:FiniteDifferenceSoluteTransport}, because the numerical solution obtained by the finite element method is well-known to suffer spurious oscillations in the advection-dominated (i.e. $Rb, Ra \to\infty$) limit or in the vicinity of sharp gradients, say due to a prescribed initial condition or boundary condition. A finer mesh can improve this, but it is not computationally pheasible to use an ever-increasing mesh resolution. Stabilized finite element formulations for the advection-dominated case are included in appendix \ref{chap:FiniteElementFormulation}.  In the case of \eqref{eq:FiniteDifferenceSoluteTransport}, another cause of spurious oscillations in the numerical solution can be due to the reaction term dominating \eqref{eq:FiniteDifferenceSoluteTransport} (i.e. $Da\to\infty$ provided that $R\neq 0$), which in effect makes the differential equation `stiff' and require impractically-small timesteps to avoid numerical instability. As a somewhat blunt but nonetheless effective defence against spurious oscillations, we follow [cite] and also include in our numerical simulation program the option to correct at each step in the numerical integration any values of the temperature and concentration that fall outside the physically-permitted ranges. In the simple case of the finite element approximation $\theta^{n}(\textbf{x})=\sum_j\theta^{n}_j\xi_j(\textbf{x})$ having for its degrees-of-freedom $\{\theta^n_j\}_j$ pointwise evaluations (as opposed to more exotic evaluations such as integral moments or derivatives), then a simple correction algorithm restricting $\theta^n\in[\theta_{\text{min}},\theta_{\text{max}}]$ can be implemented by $\theta_j^n\gets\theta_{\text{max}}$ if $\theta_j^n>1$ and $\theta_j^n\gets\theta_{\text{min}}$ if $\theta_j^n<\theta_{\text{min}}$.
-
-We use continuous linear Lagrange elements $\text{P}_1$ for the temperature $\theta$ and concentration $c$, unless the variational formulation chosen is discontinuous Galerkin (DG) in which case discontinuous linear Lagrange elements $\text{DP}_1$ are instead used. $\text{P}_1$ elements are also used for the saturation $s$. Solving \eqref{eq:FiniteDifferenceContinuity} and \eqref{eq:FiniteDifferenceDarcy} requires a mixed finite element method solving for $(\textbf{u}, p)$ together. The choice of finite elements in mixed problems must satisfy the inf-sup condition [cite], and we use $\text{BDM}_1$-$\text{DP}_0$ pair which is well-known to be stable for solving the Darcy flow equations [cite]. In the streamfunction formulation, we use continuous quadratic Lagrange elements $\text{P}_2$ for the streamfunction $\psi$ which is then differentiated to obtain the velocity components \eqref{eq:FiniteDifferenceStreamfunctionVelocity}, for which we use $\text{DP}_1$ elements.
- --></p>
 
 
 </section>
@@ -1263,13 +1147,13 @@ We use continuous linear Lagrange elements $\text{P}_1$ for the temperature $\th
   </script>
 <nav class="page-navigation">
   <div class="nav-page nav-page-previous">
-      <a href="./chapter1.html" class="pagination-link" aria-label="Introduction">
+      <a href="./chapter01.html" class="pagination-link" aria-label="Introduction">
         <i class="bi bi-arrow-left-short"></i> <span class="nav-page-text"><span class="chapter-number">1</span>&nbsp; <span class="chapter-title">Introduction</span></span>
       </a>          
   </div>
   <div class="nav-page nav-page-next">
-      <a href="./chapter3.html" class="pagination-link" aria-label="Numerical software">
-        <span class="nav-page-text"><span class="chapter-number">3</span>&nbsp; <span class="chapter-title">Numerical software</span></span> <i class="bi bi-arrow-right-short"></i>
+      <a href="./chapter03.html" class="pagination-link" aria-label="Numerical methods">
+        <span class="nav-page-text"><span class="chapter-number">3</span>&nbsp; <span class="chapter-title">Numerical methods</span></span> <i class="bi bi-arrow-right-short"></i>
       </a>
   </div>
 </nav>

@@ -1,0 +1,26 @@
+## Intro
+
+Many softwares exists to numerically solve PDEs, and they can be classified according to their intended end-users and numerical method. Some, such as ANSYS (finite element) and COMSOL (finite element) [citation], target commercial end-users. Such industrial softwares are typically not open-source, require expensive licences and can hide away low-level details in the numerical method so that the user experience is akin to a `black box solver'. Freely available and open-source software in scientific research is paramount to having shareable code and reproducible results. To this end the academic community maintains a vast number of open-source softwares, typically implemeting a particular method and often specialised to a certain academic displine or set of equations. At a lower level, end-users can be researchers developing novel numerical methods, or at a higher level simply looking to solve equations specific to their research. Some of the most well-establised open-source PDE solvers employing the finte element method include deal.II, FEniCS, FreeFEM.
+
+We chose to solve our equations using the finite element method because ... 
+
+We chose to work with FEniCS due to its Python application programming interface (API) being user-friendly, interactive and its ability to be used seemlessly alongside the rest of the scientific Python vast ecosystem's packages such as \texttt{numpy} for array computing, \texttt{scipy} for scientific utilities and \texttt{matplotlib} for creating figures. 
+
+Though FEniCS is powerful, well-documented software project with a large user base, a number support for time-dependent PDEs, with time discretizations typically being hard-coded and lacking flexibility, checkpointing I/O remaining to be implemented (though progress is being made on a third-party package [citation]). 
+
+```{python}
+import lucifex
+import crocodil
+print('hello world')
+```
+
+```{python}
+from lucifex.fdm import FiniteDifference
+
+print(FiniteDifference)
+```
+
+```{python}
+print(FiniteDifference)
+```
+

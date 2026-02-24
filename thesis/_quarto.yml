@@ -1,13 +1,5 @@
 project:
   type: book
-  render:
-    - index.qmd
-    - asbtract.qmd
-    - acknowledgemenåts.qmd
-    - chapter1.qmd
-    - chapter2.qmd
-    - chapter3.qmd
-    - references.qmd
 
 book:
   title: "Modelling of Advective-Diffusive-Reactive Flows in Geological Carbon Sequestration"
@@ -17,9 +9,12 @@ book:
     - asbtract.qmd
     - acknowledgements.qmd
     - toc.qmd
-    - chapter1.qmd
-    - chapter2.qmd
-    - chapter3.qmd
+    - chapter01.qmd
+    - chapter02.qmd
+    - chapter03.qmd
+    - chapter04.qmd
+    - appendixA.qmd
+    - appendixB.qmd
     - references.qmd
 
 bibliography: references.bib
@@ -37,5 +32,8 @@ format:
     documentclass: scrreprt
     number-depth: 3
     toc: false  
+
+website:
+  site-url: https://george-poole.github.io/thesisDRAFT/
 
 

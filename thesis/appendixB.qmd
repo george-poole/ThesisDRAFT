@@ -1,0 +1,169 @@
+# Finite element formulations {.unnumbered .unlisted}
+
+In this appendix we derive the finite element formulations of \eqref{eq:FiniteDifferenceSoluteTransport}-\eqref{eq:FiniteDifferenceDarcy} and \eqref{eq:FiniteDifferenceStreamfunctionPoisson}-\eqref{eq:FiniteDifferenceStreamfunctionVelocity}.
+
+\section{Darcy's equations}
+
+% We include here for completeness an alternative method of solving Darcy's equation for the fluid velocity and pressure together via a mixed finite element method (MFEM), replacing the above steps [ref] and [ref]. In addition to being applicable in 3D and being capable of handling boundary conditions of prescribed pressure and non-zero prescribed, another advantage this method has over the 2D streamfunction formulation is that it does not require incompressibility. Retaining the $\varepsilon$ term in [eqref], we have 
+
+\eqref{eq:FiniteDifferenceContinuity} and \eqref{eq:FiniteDifferenceDarcy}
+
+\section{Streamfunction equations}
+\label{sec:StreamfunctionAppendix}
+
+The streamfunction equation \eqref{eq:FiniteDifferenceStreamfunctionPoisson} is readily identified as a tensor-weighted Poisson equation, and as such is very amenable to the finite element method. We derive the variational problem, that is to find $\psi^n\in V_\psi$ such that
+
+\begin{equation}
+\label{eq:VariationalStreamfunction}
+\int_{\partial\Omega}\text{d}\Gamma~v\,\textbf{n}\cdot\nabla\psi^n-\int_\Omega\text{d}\Omega~\nabla v\cdot\bigg(\frac{\mu^n\,(\mathsf{K}^n)^{\mathsf{T}}\cdot\nabla\psi^n}{\det(\mathsf{K}^n)}\bigg)=\int_\Omega\text{d}\Omega~v\cos\beta\frac{\partial\rho^n}{\partial x} - v\sin\beta\frac{\partial\rho^n}{\partial y} ~~~\forall v\in\hat{V}_\psi
+\end{equation}
+
+by multiplying \eqref{eq:FiniteDifferenceStreamfunctionPoisson} by some test function $v$, integrating over the domain $\Omega$ and integrating the left-hand side by parts. $V_\psi$ and $\hat{V}_\psi$ are a suitably-chosen function spaces for the trial function $\psi$ and the test function $v$ respectively. We choose for the (discretized) trial and test function space
+
+\begin{equation}
+V_\psi = \hat{V}_\psi = \{v\in H^1(\Omega)~,~v|_{\partial\Omega}=0~,~v|_{\mathcal{K}}\in\text{P}_k(\mathcal{K})~\forall\mathcal{K}\in\cup_{\mathcal{K}}\mathcal{K}\}
+\end{equation}
+
+with $k\geq2$, where $\text{P}_k(\mathcal{K})$ denotes a Lagrange polynomial of degree $k$ on the cell $\mathcal{K}$ of the mesh $\Omega$ and $H^1(\Omega)$ denotes the Sobolev space. Since the test function vanishes on the boundary and the streamfunction boundary condition $\psi|_{\partial\Omega}=0$ is a pure Dirichlet boundary condition, the above term for Neumann boundary conditions vanishes leaving 
+
+\begin{equation}
+F_\psi(\psi^n, v)\equiv -\int_\Omega\text{d}\Omega~\nabla v\cdot\bigg(\frac{\mu^n\,(\mathsf{K}^n)^{\mathsf{T}}\cdot\nabla\psi^n}{\det(\mathsf{K}^n)}\bigg) - v\cos\beta\frac{\partial\rho^n}{\partial x} + v\sin\beta\frac{\partial\rho^n}{\partial y}=0 ~~~\forall v\in\hat{V}_\psi
+\end{equation}
+
+Whilst the advection expression $\textbf{u}\cdot\nabla c$ in the transport equations \eqref{eq:FiniteDifferenceSoluteTransport} and \eqref{eq:FiniteDifferenceHeatTransport} could simply be written in terms of the streamfunction as $(\partial\psi/\partial y, -\partial\psi/\partial x)\cdot\nabla c$ to avoid having to directly compute the velocity prior to solving \eqref{eq:FiniteDifferenceSoluteTransport}, in practice it is desirable to compute $\textbf{u}$ throughout the course of the simulation in order to verify that no-flux boundary conditions are respected. Furthermore having $\textbf{u}^n$ available simplifies the computation of secondary quantities such as the advective flux \eqref{eq:SolutalAdvectiveFlux}, maximum speed $\max_{\textbf{x}}|\textbf{u}^n|$ and CFL timestep \eqref{eq:TimestepCFL}. For a streamfunction in the continuous Lagrange function space of degree $k~(=2)$, it is appropritate to choose for velocity a vector-valued discontinuous Lagrange function space of degree $k-1~(=1)$.
+
+\begin{equation}
+V_{\textbf{u}} = \{\textbf{v}\in L^2(\Omega)\times L^2(\Omega)~,~\textbf{n}\cdot\textbf{v}|_{\partial\Omega}=0~,~\textbf{v}|_{\mathcal{K}}\in\text{DP}_{k-1}(\mathcal{K})\times\text{DP}_{k-1}(\mathcal{K})~\forall\mathcal{K}\in\cup_{\mathcal{K}}\mathcal{K}\}
+\end{equation}
+
+incorporating the no-flux boundary conditions, where $\text{DP}_k(\mathcal{K})$ denotes a discontinuous Lagrange polynomial of degree $k$ on the cell $\mathcal{K}$ of the mesh $\Omega$ and $L^2(\Omega)$ denotes the Lebesgue space. Solving for $\textbf{u}$ can either be treated as the projection problem of finding $\textbf{u}\in V_{\textbf{u}}$ such that
+
+\begin{equation}
+F_{\textbf{u}}(\textbf{u}^n, \textbf{v})=
+\int_\Omega\text{d}\Omega~\textbf{v}\cdot\textbf{u}^n-\int_\Omega\text{d}\Omega~\textbf{v}\cdot\begin{pmatrix}
+\frac{\partial\psi^n}{\partial y} \\
+-\frac{\partial\psi^n}{\partial x}
+\end{pmatrix}~~~\forall\textbf{v}\in\hat{V}_{\textbf{u}}
+\end{equation}
+
+or alternatively as the interpolation problem of the vector-valued expression $(\partial\psi^n/\partial y, -\partial\psi^n/\partial x)$ into the function space $V_{\textbf{u}}$. The interpolation problem has the advantage of being less computationally demanding since no matrix assembly and inversion is required.
+
+\section{Solute transport equation}
+
+\subsection{Continuous Galerkin formulation}
+
+Firstly it is convenient to divide the transport equation \eqref{eq:FiniteDifferenceSoluteTransport} through by the porosity $\phi$ so that the time derivative term is not multiplied by a non-constant coefficient. Then we choose for the (discretized) test and trial function spaces
+
+\begin{align}
+V_c &= \{v\in H^1(\Omega)~,~v|_{\mathcal{K}}\in\text{P}_k(\mathcal{K})~\forall\mathcal{K}\in\cup_{\mathcal{K}}\mathcal{K}\} \\
+\hat{V}_c &= \{v\in H^1(\Omega)~,~v|_{\partial\Omega}=0~,~v|_{\mathcal{K}}\in\text{P}_k(\mathcal{K})~\forall\mathcal{K}\in\cup_{\mathcal{K}}\mathcal{K}\}
+\end{align}
+
+with degree $k=1$ such that at the $n^{\text{th}}$ integration step the variational problem is to find $c^{n+1}\in V_c$ such that
+
+\begin{equation}
+\begin{aligned}
+\label{eq:TransportCGAppendix}
+F_c(c^{n+1}, v)&\equiv \int_\Omega\text{d}\Omega~v\frac{c^{n+1}-c^n}{\Delta t^n} \\
+&\quad\quad +v\frac{\mathcal{D}_A(\textbf{u}\cdot\nabla c)}{\mathcal{D}_\phi(\phi)} \\
+&\quad\quad +\frac{1}{Ra}\nabla\bigg(\frac{v}{\mathcal{D}_\phi(\phi)}\bigg)\cdot(\mathcal{D}_D(\mathsf{D}\cdot\nabla c)) \\
+&\quad\quad  + v\,Da\frac{\mathcal{D}_R(R)}{\mathcal{D}_\phi(\phi)} \\
+&\quad -\int_{\partial\Omega}\text{d}\Omega~\frac{1}{Ra}v\textbf{n}\cdot(\mathsf{D}\cdot\nabla c) \\
+&=0\qquad \forall v\in\hat{V}_c
+\end{aligned}
+\end{equation}
+
+The boundary term vanishes by virtue of the no-flux boundary condition $\textbf{n}\cdot(\mathsf{D}\cdot\nabla c)=0|_{\partial\Omega}$, which in the case of an isotropic dispersion $\mathsf{D}\propto\mathsf{I}$ simplifies to $\textbf{n}\cdot\nabla c=0|_{\partial\Omega}$. The finite difference operators $\mathcal{D}_{\phi, A, D, R}$ act on the porosity, advection, diffusion and reaction expressions respectively. Since $\textbf{u}^{n+1}$, $\phi^{n+1}$ and $s^{n+1}$ are not solved for prior to solving for $c^{n+1}$ in the numerical integration algorithm \ref{alg:NumericalIntegration}, the finite difference discretizations produced by $\mathcal{D}_{\phi, A, D, R}$ must be explicit with respect to $\textbf{u}$, $\phi$ and $s$.
+
+\subsection{SUPG stabilization}
+
+The continuous Galerkin formulation of the advection-dominated transport equation (i.e. \eqref{eq:TransportCGAppendix} in the limit of large $Ra$) requires additional stabilization terms to prevent spurious oscillations in the numerical solution. The streamline-upwind Petrov-Galerkin (SUPG) [cite] method adds to \eqref{eq:TransportCGAppendix} the term
+
+$$F_{\text{SUPG}}(c^{n+1}, v)=\int_\Omega\text{d}\Omega~\tau^n(\textbf{u}^n_{\text{eff}}\cdot\nabla )\mathcal{R}^{n+1}$$
+
+where $\tau^n$ is a stabilization parameter, $\textbf{u}^n_{\text{eff}}$ is an effective velocity and
+
+\begin{align}
+\label{eq:ResidualSUPG}
+\mathcal{R}^{n+1}&=\frac{c^{n+1}-c^n}{\Delta t^n} + \frac{\mathcal{D}_A(\textbf{u}\cdot\nabla c)}{\mathcal{D}_\phi(\phi)} - \frac{1}{Ra}\frac{\mathcal{D}_D(\nabla\cdot(\mathsf{D}\cdot\nabla c))}{\mathcal{D}_\phi(\phi)} - Da\frac{\mathcal{D}_R(R)}{\mathcal{D}_\phi(\phi)}
+\end{align}
+
+is the residual. The choice of $\tau^n$ optimal in successfully quelling spurious oscillations without introducing excessive numerical dissipation is an active topic of research, and as such there exist a number of possible expressions for $\tau^n$ in terms of an effective velocity $\textbf{u}^n_{\text{eff}}$, effective diffusivity $\mathsf{D}^n_{\text{eff}}$ and reaction $R^n_{\text{eff}}$, which are defined with reference to [eqref] cast in the form of the steady-state transport equation
+
+\begin{align}
+\textbf{u}^n_{\text{eff}}\cdot\nabla c^{n+1}-\nabla\cdot(\mathsf{D}^n_{\text{eff}}\cdot\nabla c^{n+1})+R^n_{\text{eff}}c^{n+1}=S^n
+\end{align} 
+
+with source term $S^n$ explicit in $c$. In general $\tau^n=\tau^n(\textbf{u}^n_{\text{eff}}, \mathsf{D}^n_{\text{eff}}, R^n_{\text{eff}}, \ell)$ given some local cell size measure $\ell(\textbf{x})$. In the case of the 1D advection-diffusion equation with no reaction term, the optimal stabilization parameter is known to be
+
+\begin{align}
+\tau^n = \frac{\ell}{2|\textbf{u}^n_{\text{eff}}|} \bigg(\text{coth}\bigg(\frac{|\textbf{u}^n_{\text{eff}}|\ell}{2D^n_{\text{eff}}}\bigg) - \frac{2D^n_{\text{eff}}}{|\textbf{u}^n_{\text{eff}}|\ell}\bigg)
+\end{align}
+
+but, strictly speaking, this result does not generalize to higher dimensions. Nonetheless it can be used anyway in 2D or 3D with some success [cite]. [ref] suggests the form,
+
+\begin{align}
+\label{eq:TauCodina}
+\tau^n &=\bigg(\frac{2|\textbf{u}^n_{\text{eff}}|}{\ell}+\frac{4D^n_{\text{eff}}}{\ell^2}+R^n_{\text{eff}}\bigg)^{-1} 
+\end{align}
+
+or alternatively following [ref]
+
+\begin{align}
+\label{eq:TauShakib}
+\tau^n &=\bigg(\bigg(\frac{2|\textbf{u}^n_{\text{eff}}|}{\ell}\bigg)^2+9\bigg(\frac{4D^n_{\text{eff}}}{\ell^2}\bigg)^2+(R^n_{\text{eff}})^2\bigg)^{-1/2} 
+\end{align}
+
+\subsection{Discontinuous Galerkin formulation}
+
+In the discontinuous Galerkin (DG) method, we instead choose for the trial and test spaces
+
+\begin{align}
+V_c = \hat{V}_c = \{v\in H^1(\Omega)~,~v|_{\mathcal{K}}\in\text{DP}_k(\mathcal{K})~\forall\mathcal{K}\in\cup_{\mathcal{K}}\mathcal{K}\} 
+\end{align}
+
+with degree $k=1$. In contrast to the CG method, requirement of continuity at each mesh cell vertex is relaxed in favour of imposing local flux conservation across cell facets [rethink]. Dirichlet boundary conditions are also weakly imposed in the variational formulation, as opposed to being stronly imposed on the linear algebra. We denote by $\{\cdot\}$ and $\llbracket\cdot\rrbracket$ the cell facet average and jump operators defined by 
+
+\begin{align}
+\{v\}&=\frac{1}{2}(v^++v^-) \\
+\{\textbf{v}\}&=\frac{1}{2}(\textbf{v}^++\textbf{v}^-) \\
+\llbracket v \rrbracket &= v^+ - v^- \\
+\llbracket\textbf{v}\rrbracket &= \textbf{n}^+\cdot\textbf{v}^+ - \textbf{n}^-\cdot\textbf{v}^- = \textbf{n}\cdot(\textbf{v}^+ - \textbf{v}^-)
+\end{align}
+
+when acting on either a scalar $v$ or vector $\textbf{v}$. Here $\textbf{n} = \textbf{n}^+ = -\textbf{n}^-$ is the outward unit normal on a cell facet. Following the lengthy derivation of [cite], the variational problem is to find $c^{n+1}\in V_c$ such that
+
+\begin{equation}
+\begin{aligned}
+\label{eq:AppendixTransportDG}
+F_c(c^{n+1},v)&\equiv \int_\Omega\text{d}\Omega~v\frac{c^{n+1}-c^n}{\Delta t^n} \\
+&\quad\quad + ... \\
+&\quad\quad  + v\,Da\frac{\mathcal{D}_R(R)}{\mathcal{D}_\phi(\phi)} \\
+&\quad -\int_{\partial\Omega}\text{d}\Omega~\frac{1}{Ra}v\textbf{n}\cdot(\mathsf{D}\cdot\nabla c) \\
+&=0 \forall v\in\hat{V}_c
+\end{aligned}
+\end{equation}
+
+Again in contrast to the CG formulation, Dirichlet boundary conditions are weakly imposed in the variational formulation by the penalty parameter $\gamma_{\text{DG}}$ rather than being imposed strongly on the linear algebra.
+
+\section{Thermal transport equation}
+
+Finite element formulations of the thermal transport equation \eqref{eq:FiniteDifferenceHeatTransport} are identical to those of the solute transport equation \eqref{eq:FiniteDifferenceSoluteTransport}, except with terms relating the reaction omitted. 
+
+
+\section{Evolution equation}
+
+Since the evolution equation \eqref{eq:FiniteDifferenceEvolution} contains no spatial derivatives, it is essentially just a projection problem to be solved for $s^{n+1}$.
+
+\begin{equation}
+\label{eq:AppendixEvolution}
+F_s(s^{n+1},v) \equiv \int_\Omega\text{d}\Omega~v\frac{s^{n+1}-s^n}{\Delta t^n}  + v\,\varepsilon Da\frac{\mathcal{D}_R(R)}{\varphi} =0\qquad \forall v\in\hat{V}_s
+\end{equation}
+
+with function spaces $V_s = \hat{V}_s = \{v\in H^1(\Omega)~,~v|_{\mathcal{K}}\in\text{P}_k(\mathcal{K})~\forall\mathcal{K}\in\cup_{\mathcal{K}}\mathcal{K}\}$. Alternatively, if $\mathcal{D}_R$ is explicit with respect to $s$ then \eqref{eq:FiniteDifferenceEvolution} may be rearranged explicitly for $s^{n+1}$ and we have the interpolation problem of
+
+$$s^{n+1} = s^{n} -\Delta t\,\varepsilon Da\frac{\mathcal{D}_R(R)}{\varphi}$$
+
+into the function space $V_s$. $\mathcal{D}_R$ need not be explicit with respect to $c$ since $c^{n+1}$ is solved for before $s^{n+1}$ in Algorithm \ref{alg:NumericalIntegration}.
+
+% was less computationally costly and did not suffer from instabilities or unphysical saturation values outside the permitted range $S\in[0, s_r]$ compared to the projection problem: find $s^{n+1}\in V_S$ such that

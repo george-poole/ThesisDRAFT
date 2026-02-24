@@ -10,17 +10,12 @@ The solubility trapping of geologically sequestered CO$_2$ represents one of the
 
 ![](./figures/ipcc.png){#fig-ipcc width=70%}
 
-Mechanisms of geological CO$_2$ storage, reproduced from @metz_ipcc_2005.
+Mechanisms of geological CO$_2$ storage, reproduced from @metzIPCCSpecialReport2005.
 :::
 
-\begin{figure}[ht]
-\begin{center}
-\includegraphics[width=1.0\textwidth]{figures/anticline.pdf}
-\end{center}
-\caption{Schematic of geologically-sequestered CO$_2$ in an anticline formation. Single-phase CO$_2$ is injected at a point downslope of the apex, but rises towards the apex because it is more buoyant than the surrounding brine. Capillary-tragged CO$_2$ is left behind in its wake. Further rising of the buoyant CO$_2$ is halted by the impermeable cap rock layer, though leakage may still occur through faults, or over a much longer time scale if the cap rock has low but non-zero permeability. Some anticline formations may also have a background hydrogeological flow from on side to the other. Boxes 1, 2 and 3 isolate the different regions and flows within the anticline formations that research into the fluid dynamics of carbon sequestration has investigated so far with simplified mathematical and numerical models. A simplified model for box 4 is proposed in the following section.}
-\label{fig:Anticline}
-\end{figure}
+::: {#fig-anticline}
 
-## One
+![](./figures/anticline.png){#fig-anticline width=70%}
 
-## Two
+Schematic of geologically-sequestered CO$_2$ in an anticline formation. Single-phase CO$_2$ is injected at a point downslope of the apex, but rises towards the apex because it is more buoyant than the surrounding brine. Capillary-tragged CO$_2$ is left behind in its wake. Further rising of the buoyant CO$_2$ is halted by the impermeable cap rock layer, though leakage may still occur through faults, or over a much longer time scale if the cap rock has low but non-zero permeability. Some anticline formations may also have a background hydrogeological flow from on side to the other. Boxes 1, 2 and 3 isolate the different regions and flows within the anticline formations that research into the fluid dynamics of carbon sequestration has investigated so far with simplified mathematical and numerical models. A simplified model for box 4 is proposed in the following section.
+:::

@@ -1,0 +1,207 @@
+## Governing equations
+
+In a porous medium filling a domain $\Omega$ with boundary $\partial\Omega$, flow coupled to thermosolutal transport is modelled by the general governing equations for $(\textbf{x}, t)\in\Omega\times[0,\infty)$
+
+\begin{align}
+\label{eq:DimensionalHeatTransport}
+\phi\frac{\partial\theta}{\partial t}+\nabla\cdot(\theta\textbf{u}-\mathsf{G}\cdot\nabla c)&=0\\
+\label{eq:DimensionalSoluteTransport}
+\frac{\partial(\phi c)}{\partial t}+\nabla\cdot(c\textbf{u}-\mathsf{D}\cdot\nabla c)&=R\\
+\label{eq:DimensionalContinuity}
+\frac{\partial(\phi \rho)}{\partial t}+\nabla\cdot(\rho\textbf{u})&=R\\
+\label{eq:DimensionalDarcy}
+\textbf{u}&=-\frac{\mathsf{K}}{\mu}\cdot(\nabla p-\rho\textbf{g}) \\
+\label{eq:DimensionalEvolution}
+\varrho\frac{\partial \phi}{\partial t}&=R
+\end{align}
+
+where the transport equation \eqref{eq:DimensionalHeatTransport} for the fluid temperature $\theta$ with a thermal dispersion $\mathsf{G}$ is derived from the conservation of energy (assuming no heat transfer between the solid and liquid phases in the porous medium and no heat sources or sinks); \eqref{eq:DimensionalSoluteTransport} describes the transport of solute dissolved at concentration $c$ (solute mass per unit fluid volume) in fluid flowing through a porous medium of porosity $\phi$, incorporating advective transport due to the Darcy velocity $\textbf{u}$, dispersion with coefficient $\mathsf{D}$ and rate of addition or removal $R$ due to chemical reactions; \eqref{eq:DimensionalContinuity} expresses mass conservation in the fluid of density $\rho$; \eqref{eq:DimensionalDarcy} is Darcy's law expressing the Darcy velocity $\textbf{u}$ in terms of the permeability $\mathsf{K}$, fluid viscosity $\mu$, pressure gradient $\nabla p$ and buoyancy force $\rho\textbf{g}$; \eqref{eq:DimensionalEvolution} also expresses mass conservation and models the evolution of porosity $\phi$ due to the addition or removal of solute mass from an immobile phase of density $\varrho$. Note that the Darcy velocity differs from the interstitial fluid velocity $\phi\textbf{u}$ by a factor of porosity. This system of equations is closed by a set empirical relations for the concentration-dependent fluid density $\rho=\rho(c)$ and viscosity $\mu=\mu(c)$ (i.e. equations of state), porosity-dependent permeability $\mathsf{K}=\mathsf{K}(\phi)$, dispersions $\mathsf{G}=\mathsf{G}(\phi, \textbf{u})$ and $\mathsf{D}=\mathsf{D}(\phi, \textbf{u})$ dependent on both porosity and Darcy velocity, and a reaction rate $R=R(\phi, c, \theta)$ dependent on porosity, concentration and temperature. $\mathsf{G}$, $\mathsf{D}$ and $\mathsf{K}$ are in general tensor-valued to account for anisotropy in the porous medium. The gravity vector expressed in terms of its unit vector is $\textbf{g}=g\textbf{e}_g$.
+
+The governing equations \eqref{eq:DimensionalHeatTransport}-\eqref{eq:DimensionalEvolution} are supplemented by a set of boundary conditions on $\theta$, $c$, and ($\textbf{u}$, $p$) and initial conditions on $\theta$, $c$ and $s$. In general the boundary conditions on the transport equations \eqref{eq:DimensionalHeatTransport} and \eqref{eq:DimensionalSoluteTransport} may be a combination of Dirichlet (D) and Neumann (N) boundary conditions prescribing a known value or flux respectively
+
+\begin{align}
+\label{eq:ThermalDirichlet}
+\theta &= \theta_{\text{D}}\quad\text{for~}\textbf{x}\in\partial\Omega_{\text{D},\theta} \\
+\label{eq:ThermalNeumann}
+\textbf{n}\cdot(\mathsf{G}\cdot\nabla\theta) &= \theta_{\text{N}}\quad\text{for~}\textbf{x}\in\partial\Omega_{\text{N},\theta}=\partial\Omega/\partial\Omega_{\text{D},\theta} \\
+\label{eq:SolutalDirichlet}
+c &= c_{\text{D}}\quad\text{for~}\textbf{x}\in\partial\Omega_{\text{D},c}\\
+\label{eq:SolutalNeumann}
+\textbf{n}\cdot(\mathsf{D}\cdot\nabla c) &= c_{\text{N}}\quad\text{for~}\textbf{x}\in\partial\Omega_{\text{N},c}=\partial\Omega/\partial\Omega_{\text{D},c}
+\end{align}
+
+where $\textbf{n}$ is the outward unit normal to the boundary. The boundary conditions on the fluid flow governed by the Darcy system \eqref{eq:DimensionalContinuity} and \eqref{eq:DimensionalDarcy} may be either a prescribed pressure, or a prescribed normal velocity. For reasons that will become evident later in our discussion of the finite element method, we shall refer to these as essential (E) and natural (N) boundary conditions respectively.
+
+\begin{align}
+\textbf{n}\cdot\textbf{u} &= u_{\text{E}}\quad\text{for~}\textbf{x}\in\partial\Omega_{\text{E}} \\
+p &= p_{\text{N}}\quad\text{for~}\textbf{x}\in\partial\Omega_{\text{N}}=\partial\Omega/\partial\Omega_{\text{E}}
+\end{align}
+
+In the case $\partial\Omega_{\text{N}}=\varnothing$, the velocity boundary condition must also obey the constraint $\int_{\partial\Omega_{\text{E}}}u_{\text{E}}~\text{d}\Gamma=0$ due to incompressibility. Since the governing equations do not contain any time-derivatives of the velocity or presure, initial conditions on $\textbf{u}$ and $p$ need not be provided. We denote the initial temperature, concentration an saturation by
+
+\begin{align}
+\label{eq:InitialTemperature}
+\theta(\textbf{x}, t=0) &= \theta_0(\textbf{x}) \\
+\label{eq:InitialConcentration}
+c(\textbf{x}, t=0) &= c_0(\textbf{x}) \\
+\label{eq:InitialSaturation}
+s(\textbf{x}, t=0) &= s_0(\textbf{x})
+\end{align}
+
+In our model of the dissolution of capillary-trapped CO$_2$ and its subsequent transport via advection and diffusion in the brine fluid, $c$ is the concentration of CO$_2$ dissolved in brine, $R$ is the rate of addition into the brine due to the dissolution of capillary-trapped CO$_2$ and $\varrho$ is the density of the single-phase CO$_2$. We set $\phi=\varphi(1-s)$ to instead work with the saturation $s$ of capillary-trapped CO$_2$ and note that $\frac{\partial\phi}{\partial t}=-\varphi\frac{\partial s}{\partial t}$. 
+
+### Boussinesq approximation
+
+The first simplication to be made to the governing equations \eqref{eq:DimensionalHeatTransport}-\eqref{eq:DimensionalEvolution} is the Boussinesq approximation, which neglects variations in brine density $\rho$ except in the buoyancy term. In \eqref{eq:DimensionalContinuity} we set $\rho\approx\rho_{\text{ref}}$ for some constant reference brine density $\rho_{\text{ref}}$ to obtain
+
+\begin{align}
+\nabla\cdot\textbf{u}&=\varphi\frac{\partial s}{\partial t} + \frac{R}{\rho_{\text{ref}}} \\
+&=R\bigg(\frac{1}{\rho_{\text{ref}}} - \frac{1}{\varrho}\bigg)
+\end{align}
+
+and it follows that by expanding the left-hand side terms in \eqref{eq:DimensionalSoluteTransport} that
+
+\begin{align}
+\varphi(1-s)\frac{\partial c}{\partial t}+\textbf{u}\cdot\nabla c=\nabla\cdot(\mathsf{D}\cdot\nabla c)+R\bigg(1-\frac{c}{\rho_{\text{ref}}}\bigg)
+\end{align}
+
+### Streamfunction formulation
+
+psi
+
+### Pressure formulation
+
+p
+
+### Non-dimensionalisation & further approximation {#sec-non_dimensionalisation}
+
+Before discussing appropriate length, time and velocity scales it is helpful to first assume that the constitutive relations have certain scalings. Firstly we have from the aforementioned Boussinesq approximation $(\rho -\rho_{\text{ref}}) g\sim g\Delta\rho$ for some density variation scale $\Delta\rho$. Likewise for a temperature scale $\Delta\theta$ we scale $\theta\sim\Delta\theta$. Secondly we expect the concentration of CO$_2$ in brine to be bounded from above by some equilibrium concentration $c_{\text{e}}$ and hence $c\sim c_{\text{e}}$. To avoid confusion with the saturation $s$ of capillary-trapped CO$_2$ we shall always refer to an equilibrium, rather than saturation, concentration throughout this thesis. We make the scalings $\mu\sim\mu_{\text{ref}}$, $|\mathsf{K}|\sim K_{\text{ref}}$, $|\mathsf{G}|\sim G_{\text{ref}}$ and $|\mathsf{D}|\sim D_{\text{ref}}$ from appropriate reference values. Though the porosity is already a dimensionless quantity, it is instructive to rescale according to $\varphi\sim\varphi_{\text{ref}}$ and $\phi\sim\varphi_{\text{ref}}$ such that our rescaled porosities are of order unity. We also scale the reaction rate $R\sim \Delta R$. We do not yet make particular choices for the length, velocity and time scales which we shall denote by $\mathcal{L}$, $\mathcal{U}$, $\mathcal{T}$ to keep our non-dimensionalisation non-specific for now. A particular choice of $\mathcal{L}$, $\mathcal{U}$, $\mathcal{T}$ is informed by the details of a specific modelling scenario such as its boundary conditions or domain size and shape. Common choices for the length scale $\mathcal{L}$ include the domain length scale $\mathcal{L}_{\Omega}$ or diffusive length $D_{\text{ref}}/\mathcal{U}$. Similarly the velocity scale is often chosen as either the Darcy flow speed $K_{\text{ref}}\,g\Delta\rho/\mu_{\text{ref}}$ or diffusive speed $D_{\text{ref}}/\mathcal{L}$. Modelling scenarios considering the injection of fluid into the domain might also scale velocity with the injection speed $u_{\text{in}}$ prescibed in the boundary conditions. A particular non-dimensionalisation can also be desirable for a numerical method to avoid numerical instabilities caused by excessively large or small terms. Finally the time scale can be constructed from the length and velocity scales as $\varphi_{\text{ref}}\mathcal{L}/\mathcal{U}$, or alternatively chose as either the reaction time scale $\varphi_{\text{ref}}c_{\text{e}}/\Delta R$ or porosity evolution time scale $\varphi_{\text{ref}}\varrho/\Delta R$. We use the velocity scale to scale the pressure as $p\sim\mu_{\text{ref}}\,\mathcal{U}\mathcal{L}/K_{\text{ref}}$ and define a non-dimensional reduced pressure
+
+\begin{align}
+\label{eq:NonDimensionalPressure}
+\widehat{p}=\frac{K_{\text{ref}}}{\mu_{\text{ref}}\,\mathcal{U}\mathcal{L}}p + \frac{K_{\text{ref}}\rho_{\text{ref}}\,g}{\mu_{\text{ref}}\,\mathcal{U}}\textbf{e}_g\cdot\widehat{\textbf{x}}
+\end{align}
+
+which in effect measures deviations from the hydrostatic pressure in brine at uniform reference density.
+
+In the following we denote by a hat (e.g. $\textbf{x} = \mathcal{L}\,\widehat{\textbf{x}}$) the non-dimensional and rescaled variables. After rescaling according to the definitions in Table @tbl-non_dimensionalisation, we obtain the non-dimensional governing equations
+
+\begin{align}
+\label{eq:NonDimensionalHeatTransport}
+\widehat{\varphi}(1-s)\frac{\partial\widehat{\theta}}{\partial\widehat{t}}+\frac{\mathcal{U}\mathcal{T}}{\varphi_{\text{ref}}\,\mathcal{L}}\widehat{\textbf{u}}\cdot\nabla\widehat{c}&=\frac{G_{\text{ref}}\,\mathcal{T}}{\varphi_{\text{ref}}\,\mathcal{L}^2}\widehat{\nabla}\cdot(\widehat{\mathsf{G}}\cdot\widehat{\nabla}\widehat{\theta}\,)\\
+\label{eq:NonDimensionalSoluteTransport}
+\widehat{\varphi}(1-s)\frac{\partial\widehat{c}}{\partial\widehat{t}}+\frac{\mathcal{U}\mathcal{T}}{\varphi_{\text{ref}}\,\mathcal{L}}\widehat{\textbf{u}}\cdot\nabla\widehat{c}&=\frac{D_{\text{ref}}\,\mathcal{T}}{\varphi_{\text{ref}}\,\mathcal{L}^2}\widehat{\nabla}\cdot(\widehat{\mathsf{D}}\cdot\widehat{\nabla}\widehat{c}\,)+\frac{\mathcal{T}\Delta R}{\varphi_{\text{ref}}\,c_{\text{e}}}(1-\varepsilon\eta\widehat{c}\,)\widehat{R}\\
+\label{eq:NonDimensionalContinuity}
+\widehat{\nabla}\cdot\widehat{\textbf{u}}&=-\varepsilon(1-\eta)\frac{\mathcal{L}\Delta R}{\mathcal{U}\,c_{\text{e}}}\widehat{R}\\
+\label{eq:NonDimensionalDarcy}
+\widehat{\textbf{u}}&=-\frac{\widehat{\mathsf{K}}}{\widehat{\mu}}\cdot\left(\widehat{\nabla}\widehat{p}-\frac{K_{\text{ref}}\rho_{\text{ref}}\,g}{\mu_{\text{ref}}\,\mathcal{U}}\widehat{\rho}\,\textbf{e}_g\right) \\
+\label{eq:NonDimensionalEvolution}
+\widehat{\varphi}\frac{\partial s}{\partial\widehat{t}}&=-\varepsilon\frac{\mathcal{T}\Delta R}{\varphi_{\text{ref}}\,c_{\text{e}}}\widehat{R} 
+\end{align}
+
+where
+
+\begin{align}
+\label{eq:EtaDensityRatio}
+\eta &=\frac{\varrho}{\rho_{\text{ref}}} < 1
+\end{align}
+
+is the dimensionless ratio of the single-phase CO$_2$ density to the reference brine density and 
+
+\begin{align}
+\label{eq:EpsilonDensityRatio}
+\varepsilon &=\frac{c_{\text{e}}}{\varrho} \ll 1
+\end{align}
+
+is the dimensionless ratios of the brine's equilibrium concentration to the single-phase CO$_2$ density. Since single-phase CO$_2$ is known to be buoyant relative to brine,  $\eta<1$. Given that brine can only hold relatively small amounts of CO$_2$ in solution,  $\varepsilon\ll1$ is expected. To quantify the relative size of terms in \eqref{eq:NonDimensionalHeatTransport}-\eqref{eq:NonDimensionalEvolution}, we also introduce the dimensionless parameter groupings
+
+\begin{align}
+\label{eq:AdvectionNumber}
+Ad &= \frac{\mathcal{U}\mathcal{T}}{\varphi_{\text{ref}}\mathcal{L}} \\
+\label{eq:PecletNumber}
+Pe &= \frac{\varphi_{\text{ref}}\,\mathcal{L}^2}{D_{\text{ref}}\,\mathcal{T}} \\
+\label{eq:KineticNumber}
+Ki &= \frac{\mathcal{T}\Delta R}{\varphi_{\text{ref}}\,c_{\text{e}}} \\ 
+\label{eq:BuoyancyNumber}
+Bu &= \frac{K_{\text{ref}}\Delta\rho\,g}{\mu_{\text{ref}}\,\mathcal{U}}
+\end{align}
+
+and recall the definition of the Lewis number (ratio of thermal to solutal diffusivities)
+
+\begin{align}
+\label{eq:LewisNumber}
+Le & =\frac{G_{\text{ref}}}{D_{\text{ref}}} \\
+\end{align}
+
+$Ad$ and $Ki$ are sizes of the advection and reaction terms respectively. $Pe$ is a Peclet-like number for the solutal diffusion term. $Bu$ quantities the size of the buoyancy term and is in effect the ratio of the Darcy flow speed to the chosen velocity scale. We also denote by
+
+\begin{align}
+\label{eq:NonDimensionalDomainLength}
+Xl = \frac{\mathcal{L}_{\Omega}}{\mathcal{L}}
+\end{align}
+
+the non-dimensional domain's extent. In a specific modelling scenario with $\mathcal{L}$, $\mathcal{U}$, $\mathcal{T}$ chosen, the dimensionless groupings $\{Ad, Pe, Ki, Bu, X\}$ will map to familiar dimensionless numbers from fluid dynamics. We consider the $\varepsilon\to0$ limit but retain $\varepsilon$ in \eqref{eq:NonDimensionalEvolution} to allow for spatio-temporal evolution of the saturation $s$, resulting in the further approximations
+
+\begin{align}
+\label{eq:EpsZeroHeatTransport}
+\widehat{\varphi}(1-s)\frac{\partial\widehat{\theta}}{\partial\widehat{t}}+Ad\,\widehat{\textbf{u}}\cdot\nabla\widehat{c}\,&=\frac{1}{LePe}\widehat{\nabla}\cdot(\widehat{\mathsf{G}}\cdot\widehat{\nabla}\widehat{\theta}\,)\\
+\label{eq:EpsZeroSoluteTransport}
+\widehat{\varphi}(1-s)\frac{\partial\widehat{c}}{\partial\widehat{t}}+Ad\,\widehat{\textbf{u}}\cdot\nabla\widehat{c}\,&\approx\frac{1}{Pe}\widehat{\nabla}\cdot(\widehat{\mathsf{D}}\cdot\widehat{\nabla}\widehat{c}\,)+Ki\,\widehat{R}\\
+\label{eq:EpsZeroContinuity}
+\widehat{\nabla}\cdot\widehat{\textbf{u}}&\approx0\\
+\label{eq:EpsZeroDarcy}
+\widehat{\textbf{u}}&=-\frac{\widehat{\mathsf{K}}}{\widehat{\mu}}\cdot(\widehat{\nabla}\widehat{p}-Bu\,\widehat{\rho}\,\textbf{e}_g) \\
+\label{eq:EpsZeroEvolution}
+\widehat{\varphi}\frac{\partial s}{\partial\widehat{t}}&=-\varepsilon Ki\,\widehat{R}
+\end{align}
+
+Unless otherwise stated, we shall henceforth drop the hats from our dimensionless and rescaled variables. We summarise some common choices of $\mathcal{L}$, $\mathcal{U}$, $\mathcal{T}$ and their mappings in Table \ref{tab:DimensionlessMappings}, in which we define the solutal Rayleigh number (ratio of Darcy flow to solutal diffusion speeds, or equivalently ratio of solutal diffusion to Darcy flow time scales) as
+
+\begin{align}
+\label{eq:SolutalRayleighNumber}
+Ra &=\frac{\mathcal{L}_\Omega K_{\text{ref}}\,g\Delta\rho}{\mu_{\text{ref}}D_{\text{ref}}}\\
+\end{align}
+
+(note that the related thermal Rayleigh number is $LeRa$) and the Damk\"ohler number (ratio of the Darcy flow to reaction time scales) as
+
+\begin{align}
+\label{eq:DamkohlerNumber}
+Da&=\frac{\mathcal{L}_\Omega\mu_{\text{ref}}\Delta R}{K_{\text{ref}}g\Delta\rho\,c_{\text{e}}} \\
+\end{align}
+
+$Rb$ and $Ra$ are readily identified as thermal and solutal Rayleigh numbers, respectively. Noting that $G_{\text{ref}}/H$ and $D_{\text{ref}}/H$ are diffusive speeds, we see that $Rb$ and $Ra$ are ratios of advective to diffusive speeds, or alternatively a ratio of diffusive to advective time scales, which in effect quantifies the strength of advective relative to solutal diffusive transport. We are primarily interested in the limits where advection is much quicker than diffusion, so $Rb\gg1$ and $Ra\gg1$.
+
+$Da$ is the Damköhler number for the dissolution reaction. Noting that the quantity $c_{\text{e}}/\Delta R$ has units of time and may be interepreted as the dissolution time scale, we see that $Da$ is a ratio of the advective to dissolution time scales. In the limit where dissolution is much quicker than advection, we have $Da\gg1$.
+
+| Quantity | Scale | Non-Dimensionalisation |
+|---|---|---|
+| $\textbf{x}$ | $\mathcal{L}$ | $\widehat{\textbf{x}}=\textbf{x}/\mathcal{L}$ |
+| $\theta$ | $\theta$ | $\widehat{\theta}=(\theta - \theta_{\text{ref}})/\Delta \theta$ |
+| $c$ | $c_{\text{e}}$ | $\widehat{c}=c/c_{\text{e}}$ |
+| $\textbf{u}$ | $\mathcal{U}$ | $\widehat{\textbf{u}}=\textbf{u}/\mathcal{U}$ |
+| $t$ | $\mathcal{T}$ | $\widehat{t}=t/\mathcal{T}$ |
+| $p$ | $\mu_{\text{ref}}\,\mathcal{U}\mathcal{L}/K_{\text{ref}}$ | \eqref{eq:NonDimensionalPressure} |
+| $\varphi$ | $\varphi_{\text{ref}}$ | $\widehat{\varphi}=\varphi/\varphi_{\text{ref}}$ |
+| $\phi$ | $\varphi_{\text{ref}}$ | $\widehat{\phi}=\phi/\varphi_{\text{ref}}$ |
+| $\rho$ | $\Delta\rho$ | $\widehat{\rho}=(\rho - \rho_{\text{ref}})/\Delta\rho$ |
+| $\mu$ | $\mu_{\text{ref}}$ | $\widehat{\mu}=\mu/\mu_{\text{ref}}$ |
+| $\mathsf{K}$ | $K_{\text{ref}}$ | $\widehat{\mathsf{K}}=\mathsf{K}/K_{\text{ref}}$ |
+| $\mathsf{G}$ | $G_{\text{ref}}$ | $\widehat{\mathsf{G}}=\mathsf{G}/D_{\text{ref}}$ |
+| $\mathsf{D}$ | $D_{\text{ref}}$ | $\widehat{\mathsf{D}}=\mathsf{D}/D_{\text{ref}}$ |
+| $R$ | $\Delta R$ | $\widehat{R}=R/\Delta R$ |
+
+: Non-dimensional and rescaled quantities {#tbl-non_dimensionalisation}
+
+
+| $\mathcal{L}$ | $\mathcal{U}$ | $\mathcal{T}$ | $\{Ad, Pe, Ki, Bu, Xl\}$ |
+|---|---|---|---|
+| $\mathcal{L}_\Omega$ | $K_{\text{ref}}\,g\Delta\rho/\mu_{\text{ref}}$ | $\varphi_{\text{ref}}\mathcal{L}/\mathcal{U}$ | $\{1, Ra, Da, 1, 1\}$ |
+| $D_{\text{ref}}/\mathcal{U}$ | $K_{\text{ref}}\,g\Delta\rho/\mu_{\text{ref}}$ | $\varphi_{\text{ref}}\mathcal{L}/\mathcal{U}$ | $\{1, 1, Da/Ra, 1, Ra\}$ |
+| $G_{\text{ref}}/\mathcal{U}$ | $K_{\text{ref}}\,g\Delta\rho/\mu_{\text{ref}}$ | $\varphi_{\text{ref}}\mathcal{L}/\mathcal{U}$ | $\{1, Le, Da/(LeRa), 1, Ra/Le\}$ |
+| $\mathcal{L}_\Omega$ | $D_{\text{ref}}/\mathcal{L}$ | $\varphi_{\text{ref}}\mathcal{L}/\mathcal{U}$ | $\{1, 1, RaDa, Ra, 1\}$ |
+| $\mathcal{L}_\Omega$ | $D_{\text{ref}}/\mathcal{L}$ | $\varphi_{\text{ref}}c_{\text{e}}/\Delta R$ | $\{1/(RaDa), RaDa, Ra, 1\}$ |
+| $D_{\text{ref}}/\mathcal{U}$ | $K_{\text{ref}}\,g\Delta\rho/\mu_{\text{ref}}$ | $\varphi_{\text{ref}}c_{\text{e}}/\Delta R$ | $\{Ra/Da, RaDa, 1, \ldots, \ldots\}$ |
+| $\sqrt{D_{\text{ref}}\mathcal{T}/\varphi_{\text{ref}}}$ | $\varphi_{\text{ref}}\mathcal{L}/\mathcal{T}$ | $\varphi_{\text{ref}}c_{\text{e}}/\Delta R$ | $\{1, 1, 1, \sqrt{Ra/Da}, \sqrt{RaDa}\}$ |
+
+: My Caption {#tbl-scaling_choice}
+

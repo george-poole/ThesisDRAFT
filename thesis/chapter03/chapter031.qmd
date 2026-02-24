@@ -1,0 +1,126 @@
+## Discretization in time
+
+To solve \eqref{eq:NonDimensionalHeatTransport}-\eqref{eq:NonDimensionalEvolution} numerically, we use the finite element method in space with finite differences in time taken before discretization in space. Denoting by $t^n$, $\Delta t^n$ the time and timestep at the $n^{\text{th}}$ step of the numerical integration, such that $\theta(\textbf{x}, t^n)\approx\theta^n(\textbf{x})$ and the initial time is $t^0=0$, the discretized system at the $n^{\text{th}}$ step is
+
+\begin{align}
+\label{eq:FiniteDifferenceHeatTransport}
+\mathcal{D}_\phi(\phi)\frac{\theta^{n+1} - \theta^n}{\Delta t^n} + \mathcal{D}_{A,\theta}(\textbf{u}\cdot\nabla\theta) &= \frac{1}{Rb}\nabla\cdot\mathcal{D}_{D,\theta}(\mathsf{G}\cdot\nabla\theta) \\
+\label{eq:FiniteDifferenceSoluteTransport}
+\mathcal{D}_\phi(\phi)\frac{c^{n+1} - c^n}{\Delta t^n} + \mathcal{D}_{A,c}(\textbf{u}\cdot\nabla c) &= \frac{1}{Ra}\nabla\cdot\mathcal{D}_{D,c}(\mathsf{D}\cdot\nabla c) + Da\,\mathcal{D}_{R,c}(R) \\
+\label{eq:FiniteDifferenceContinuity}
+\nabla\cdot\textbf{u}^n &= 0 \\
+\label{eq:FiniteDifferenceDarcy}
+\textbf{u}^n &= - \frac{\mathsf{K}^n}{\mu^n}(\nabla p^n +\rho^n\textbf{e}_g) \\
+\label{eq:FiniteDifferenceEvolution}
+\varphi\frac{s^{n+1} - s^n}{\Delta t^n} &= -\varepsilon Da\mathcal{D}_{R,s}(R)
+\end{align}
+
+and is to be solved for $\theta^{n+1}$ $c^{n+1}$, $\textbf{u}^n$, $p^n$ and $s^{n+1}$. $\mathcal{D}$ denotes a finite difference operator acting on a time-dependent quantity or expression to produce a discretization in time. For example, a second-order Adams-Bashforth operator $\mathcal{D}=\text{AB}_2$ produces
+
+\begin{align}
+\text{AB}_2(\theta)=\frac{3}{2}\theta^n - \frac{1}{2}\theta^{n-1}
+\end{align}
+
+which is explicit with respect to $\theta$, and the backward Euler operator $\mathcal{D}=\text{BE}$ produces
+
+\begin{align}
+\text{BE}(\theta)=\theta^{n+1}
+\end{align}
+
+which is implicit with respect to $\theta$ since $\theta^{n+1}$ is being solved for. A general finite difference operator can be defined as producing a linear superposition of future, present and previous values of the time-dependent quantity of expression
+
+\begin{align}
+\mathcal{D}(\theta) = \sum_{j\leq 1}\alpha_j\theta^{n+j}
+\end{align}
+
+according to its set of constant coefficients $\{\alpha_j\}$. Note that $\alpha_1=0$ produces an explicit discretization. When discretizing an expression, such as the advection $a(\textbf{u}, \theta)=\textbf{u}\cdot\nabla\theta$, it possible to discretize expression-wise as
+
+\begin{align}
+\mathcal{D}(a(\textbf{u}, \theta)) = \sum_{j\leq 1}\alpha_ja(\textbf{u}^{n+j}, \theta^{n+j})
+\end{align}
+
+or if $\mathcal{D}$ is specified as the tuple $(\mathcal{D}_{\textbf{u}}, \mathcal{D}_\theta)$ then we discretize argument-wise as
+
+\begin{align}
+(\mathcal{D}_{\textbf{u}}, \mathcal{D}_\theta)(a(\textbf{u}, \theta)) = a(\mathcal{D}_{\textbf{u}}(\textbf{u}), \mathcal{D}_\theta(\theta))
+\end{align}
+
+In our programming of a numerical solution we avoid hard-coding any particular finite difference discretizations, instead allowing each $\mathcal{D}$ to be specified as an input parameter to the numerical simulation program. A more detailed discussion of our implementation is deferred to \ref{chap:Software}.
+
+\vspace{12pt}
+
+To satisfy stability criteria with respect to both advection and reaction, the timestep $\Delta t^n$ must be computed adaptively at each step by choosing whicever is smallest between the Courant–Friedrichs–Lewy (CFL) and reaction timesteps $\Delta t^n_{\text{CFLR}}$, $\Delta t^n_R$. We define such as timestep as
+
+\begin{align}
+\label{eq:Timestep}
+\Delta t^n_{\text{CFLR}} &= \min\{C_{\text{CFL}}\Delta t^n_{\text{CFL}}, C_R\Delta t^n_R\} 
+\end{align}
+
+where 
+
+\begin{align}
+\label{eq:TimestepCFL}
+\Delta t^n_{\text{CFL}} &= \min_{\textbf{x}}\bigg(\frac{\ell(\textbf{x})}{|\textbf{u}^n|}\bigg)  \\
+\label{eq:TimestepR}
+\Delta t^n_R &= \frac{1}{\max_{\textbf{x}}(Da|R^n|)}
+\end{align}
+
+where $0<C_{\text{CFL}}, C_R\leq 1$ are safety factors and $\ell(\textbf{x})$ is a local measure of mesh cell size (e.g. diameter, circumradius or minimum edge length). Note that in the case of a uniform mesh we have the simplication $\ell(\textbf{x})=\ell$ and hence
+
+\begin{align}
+\label{eq:TimestepUniformCFL}
+\Delta t^n_{\text{CFL}} = \frac{\ell}{\max_{\textbf{x}}|\textbf{u}^n|}
+\end{align}
+
+Finally, for practical purposes we also restrict the timestep to a desired range such that $\Delta t_{\text{min}} \leq \Delta^n \leq \Delta t_{\text{max}}$ by implementing
+
+\begin{align}
+\label{eq:TimestepMinMaxCFLR}
+\Delta t^n=\min\{\Delta t_{\text{max}}, \max\{\Delta t_{\text{min}}, \Delta t^n_{\text{CFLR}}\}\}
+\end{align}
+
+Rather than solving the entire system \eqref{eq:FiniteDifferenceHeatTransport}-\eqref{eq:FiniteDifferenceEvolution} at once as a nonlinear, mixed finite element problem for $\theta^{n+1}$, $c^{n+1}$, $\textbf{u}^n$, $p^n$ and $s^{n+1}$, we solve each subsystem in turn as a linear problem. In particular, we note that \eqref{eq:FiniteDifferenceContinuity} and \eqref{eq:FiniteDifferenceDarcy} are level in time and hence the flow subsystem can be solved independently for $(\textbf{u}^n, p^n)$, given $\mathsf{K}^n$, $\mu^n$ and $\rho^n$ which are in turn given in terms of $\theta^n$, $c^n$ and $s^n$. In the streamfunction formulation, \eqref{eq:FiniteDifferenceContinuity} and \eqref{eq:FiniteDifferenceDarcy} are replaced by 
+
+\begin{align}
+\label{eq:FiniteDifferenceStreamfunctionPoisson}
+\nabla\cdot\bigg(\frac{\mu^n\,(\mathsf{K}^n)^{\mathsf{T}}\cdot\nabla\psi^n}{\det(\mathsf{K}^n)}\bigg) &= -\frac{\partial(e_g^y\rho^n)}{\partial x}+\frac{\partial(e_g^x\rho^n)}{\partial y} \\
+\label{eq:FiniteDifferenceStreamfunctionVelocity}
+\textbf{u}^n &= 
+\begin{pmatrix}
+\frac{\partial\psi^n}{\partial y} \\
+-\frac{\partial\psi^n}{\partial x}
+\end{pmatrix}
+\end{align}
+
+Once $\textbf{u}^n$ is known, the transport equations \eqref{eq:FiniteDifferenceHeatTransport} and \eqref{eq:FiniteDifferenceSoluteTransport} can be solved in turn, provided that their discretizations are explicit with respect to $\textbf{u}$ and $s$. The final problem to solve is \eqref{eq:FiniteDifferenceEvolution}, and since $\theta^{n+1}$ and $c^{n+1}$ are known from solving \eqref{eq:FiniteDifferenceHeatTransport} and \eqref{eq:FiniteDifferenceSoluteTransport} in advance, its discretization can be explicit with respect to $\theta$ and $c$. However if $R(s, c, \theta)$ is nonlinear in $s$ then to obtain a linear problem the discretization must be explicit with respect to $s$. We list the complete numerical integration algorithm in Algorithm \ref{alg:NumericalIntegration}. More complicated numerical integration algorithms, such as predictor-corrector methods, are also possible for this system but for simplicity we do not pursue such approaches.
+
+
+<!-- 
+\begin{algorithm}
+\caption{Numerical integration of \eqref{eq:FiniteDifferenceHeatTransport}-\eqref{eq:FiniteDifferenceEvolution}}
+\label{alg:NumericalIntegration}
+\begin{algorithmic}[1]
+\\
+Initialize $n\gets 0$ \\
+Initialize $t^n\gets 0$ \\
+Initialize $\theta^n\gets\theta_0$ by \eqref{eq:InitialTemperature} \\
+Initialize $c^n\gets c_0$ by \eqref{eq:InitialSaturation} \\
+Initialize $s^n\gets s_0$ by \eqref{eq:InitialSaturation} 
+\While{$t^n<t_{\text{stop}}$ \textbf{and} $n<n_{\text{stop}}$}\\
+\hspace{12pt} Solve for ($\textbf{u}^n, p^n)$ from \eqref{eq:FiniteDifferenceContinuity} and \eqref{eq:FiniteDifferenceDarcy} 
+or ($\psi^n, \textbf{u}^n)$ from \eqref{eq:FiniteDifferenceStreamfunctionPoisson} and \eqref{eq:FiniteDifferenceStreamfunctionVelocity}
+\If{$n<n_{\text{init}}$} \\
+\hspace{24pt} $\Delta t^n\gets\Delta t_{\text{init}}$ 
+\Else{}\\
+\hspace{24pt} Solve for $\Delta t^n$ from \eqref{eq:TimestepMinMaxCFLR}
+\EndIf \\
+\hspace{12pt} Solve for $\theta^{n+1}$ from \eqref{eq:FiniteDifferenceHeatTransport} \\
+\hspace{12pt} Solve for $c^{n+1}$ from \eqref{eq:FiniteDifferenceSoluteTransport} \\
+\hspace{12pt} Solve for $s^{n+1}$ from \eqref{eq:FiniteDifferenceEvolution} \\
+\hspace{12pt} Update $t^n\gets t^n+\Delta t^n$ \\
+\hspace{12pt} Update $q^{n-j}\gets q^{n-j+1}$ for all $q\in\{\textbf{u}, p, \psi, \Delta t, \theta, c, s, t\}$ and all $j\geq 0$\\
+\hspace{12pt} Update $n\gets n +1$
+\EndWhile
+\end{algorithmic}
+\end{algorithm}
+ 

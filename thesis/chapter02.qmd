@@ -1,0 +1,7 @@
+# Governing equations for the dissolution of capillary-trapped CO$_2$
+
+{{< include ./chapter02/chapter021.qmd >}}
+
+{{< include ./chapter02/chapter022.qmd >}}
+
+{{< include ./chapter02/chapter023.qmd >}}

@@ -6,9 +6,8 @@
 
 <meta name="viewport" content="width=device-width, initial-scale=1.0, user-scalable=yes">
 
-<meta name="author" content="George Poole">
 
-<title>Modelling of Advective-Diffusive-Reactive Flows in Geological Carbon Sequestration</title>
+<title>1&nbsp; Introduction – Modelling of Advective-Diffusive-Reactive Flows in Geological Carbon Sequestration</title>
 <style>
 code{white-space: pre-wrap;}
 span.smallcaps{font-variant: small-caps;}
@@ -21,7 +20,27 @@ ul.task-list li input[type="checkbox"] {
   margin: 0 0.8em 0.2em -1em; /* quarto-specific, see https://github.com/quarto-dev/quarto-cli/issues/4556 */ 
   vertical-align: middle;
 }
-</style>
+/* CSS for citations */
+div.csl-bib-body { }
+div.csl-entry {
+  clear: both;
+  margin-bottom: 0em;
+}
+.hanging-indent div.csl-entry {
+  margin-left:2em;
+  text-indent:-2em;
+}
+div.csl-left-margin {
+  min-width:2em;
+  float:left;
+}
+div.csl-right-inline {
+  margin-left:2em;
+  padding-left:1em;
+}
+div.csl-indent {
+  margin-left: 2em;
+}</style>
 
 
 <script src="site_libs/quarto-nav/quarto-nav.js"></script>
@@ -31,7 +50,8 @@ ul.task-list li input[type="checkbox"] {
 <script src="site_libs/quarto-search/fuse.min.js"></script>
 <script src="site_libs/quarto-search/quarto-search.js"></script>
 <meta name="quarto:offset" content="./">
-<link href="./asbtract.html" rel="next">
+<link href="./chapter02.html" rel="next">
+<link href="./toc.html" rel="prev">
 <script src="site_libs/quarto-html/quarto.js" type="module"></script>
 <script src="site_libs/quarto-html/tabsets/tabsets.js" type="module"></script>
 <script src="site_libs/quarto-html/axe/axe-check.js" type="module"></script>
@@ -110,7 +130,7 @@ window.Quarto = {
 
 </head>
 
-<body class="nav-sidebar floating fullcontent quarto-light">
+<body class="nav-sidebar floating quarto-light">
 
 <div id="quarto-search-results"></div>
   <header id="quarto-header" class="headroom fixed-top">
@@ -119,7 +139,7 @@ window.Quarto = {
       <button type="button" class="quarto-btn-toggle btn" data-bs-toggle="collapse" role="button" data-bs-target=".quarto-sidebar-collapse-item" aria-controls="quarto-sidebar" aria-expanded="false" aria-label="Toggle sidebar navigation" onclick="if (window.quartoToggleHeadroom) { window.quartoToggleHeadroom(); }">
         <i class="bi bi-layout-text-sidebar-reverse"></i>
       </button>
-        <nav class="quarto-page-breadcrumbs" aria-label="breadcrumb"><ol class="breadcrumb"><li class="breadcrumb-item"><a href="./index.html">Declaration</a></li></ol></nav>
+        <nav class="quarto-page-breadcrumbs" aria-label="breadcrumb"><ol class="breadcrumb"><li class="breadcrumb-item"><a href="./chapter01.html"><span class="chapter-number">1</span>&nbsp; <span class="chapter-title">Introduction</span></a></li></ol></nav>
         <a class="flex-grow-1" role="navigation" data-bs-toggle="collapse" data-bs-target=".quarto-sidebar-collapse-item" aria-controls="quarto-sidebar" aria-expanded="false" aria-label="Toggle sidebar navigation" onclick="if (window.quartoToggleHeadroom) { window.quartoToggleHeadroom(); }">      
         </a>
       <button type="button" class="btn quarto-search-button" aria-label="Search" onclick="window.quartoOpenSearch();">
@@ -146,7 +166,7 @@ window.Quarto = {
     <ul class="list-unstyled mt-1">
         <li class="sidebar-item">
   <div class="sidebar-item-container"> 
-  <a href="./index.html" class="sidebar-item-text sidebar-link active">
+  <a href="./index.html" class="sidebar-item-text sidebar-link">
  <span class="menu-text">Declaration</span></a>
   </div>
 </li>
@@ -170,7 +190,7 @@ window.Quarto = {
 </li>
         <li class="sidebar-item">
   <div class="sidebar-item-container"> 
-  <a href="./chapter01.html" class="sidebar-item-text sidebar-link">
+  <a href="./chapter01.html" class="sidebar-item-text sidebar-link active">
  <span class="menu-text"><span class="chapter-number">1</span>&nbsp; <span class="chapter-title">Introduction</span></span></a>
   </div>
 </li>
@@ -197,25 +217,21 @@ window.Quarto = {
 </nav>
 <div id="quarto-sidebar-glass" class="quarto-sidebar-collapse-item" data-bs-toggle="collapse" data-bs-target=".quarto-sidebar-collapse-item"></div>
 <!-- margin-sidebar -->
-    
+    <div id="quarto-margin-sidebar" class="sidebar margin-sidebar zindex-bottom">
+        
+    </div>
 <!-- main -->
 <main class="content" id="quarto-document-content">
 
 <header id="title-block-header" class="quarto-title-block default">
 <div class="quarto-title">
-<h1 class="title">Modelling of Advective-Diffusive-Reactive Flows in Geological Carbon Sequestration</h1>
+<h1 class="title"><span class="chapter-number">1</span>&nbsp; <span class="chapter-title">Introduction</span></h1>
 </div>
 
 
 
 <div class="quarto-title-meta">
 
-    <div>
-    <div class="quarto-title-meta-heading">Author</div>
-    <div class="quarto-title-meta-contents">
-             <p>George Poole </p>
-          </div>
-  </div>
     
   
     
@@ -226,12 +242,34 @@ window.Quarto = {
 </header>
 
 
-<section id="declaration" class="level1 unnumbered unlisted">
-<h1 class="unnumbered unlisted">Declaration</h1>
-<p>Declaration goes here…</p>
+<p>The solubility trapping of geologically sequestered CO<span class="math inline">\(_2\)</span> represents one of the most secure, long-term solutions to underground geological carbon storage - second only to the much slower process of mineral trapping - because unlike CO<span class="math inline">\(_2\)</span> in liquid phase, brine containing dissolved CO<span class="math inline">\(_2\)</span> becomes denser and thus does not present any risk of rising by buoyancy forces to the top of the geological formation and escaping through structural faults in the cap rock. Convective dynamics driven by such density contrasts have been well-studied in the literature on porous media flows . However, the solubility of CO<span class="math inline">\(_2\)</span> in water is relatively low and the timescale for the onset of convection processes is estimated to be large . One tier down from solubility trapping in the hierarchy of storage security (see <a href="#fig-ipcc" class="quarto-xref">Figure&nbsp;<span>1.1</span></a>) is capillary trapping, whereby small amounts of CO<span class="math inline">\(_2\)</span> are left behind in the wake of a migrating CO<span class="math inline">\(_2\)</span> current. The interplay between capillary and solubility trapping provides the motivation for the research forming this thesis. As small bubbles of CO<span class="math inline">\(_2\)</span> form and are left trapped in pore spaces, nearby brine is expected to partially dissolve these bubbles and become saturated. If the saturated brine is then replaced by unsaturated brine, due to mechanisms such as convection, exchange flow or background hydrogeologic flow, the capillary-trapped CO<span class="math inline">\(_2\)</span> would further diminish by dissolution, and potentially dissolve entirely.</p>
+<div id="fig-ipcc" class="quarto-float quarto-figure quarto-figure-center anchored">
+<figure class="quarto-float quarto-float-fig figure">
+<div aria-describedby="fig-ipcc-caption-0ceaefa1-69ba-4598-a22c-09a6ac19f8ca">
+<img src="./figures/ipcc.png" id="fig-ipcc" class="img-fluid figure-img" style="width:70.0%">
+</div>
+<figcaption class="quarto-float-caption-bottom quarto-float-caption quarto-float-fig" id="fig-ipcc-caption-0ceaefa1-69ba-4598-a22c-09a6ac19f8ca">
+Figure&nbsp;1.1: Mechanisms of geological CO<span class="math inline">\(_2\)</span> storage, reproduced from <span class="citation" data-cites="metzIPCCSpecialReport2005">Metz et al. (<a href="references.html#ref-metzIPCCSpecialReport2005" role="doc-biblioref">2005</a>)</span>.
+</figcaption>
+</figure>
+</div>
+<div id="fig-anticline" class="quarto-float quarto-figure quarto-figure-center anchored">
+<figure class="quarto-float quarto-float-fig figure">
+<div aria-describedby="fig-anticline-caption-0ceaefa1-69ba-4598-a22c-09a6ac19f8ca">
+<img src="./figures/anticline.png" id="fig-anticline" class="img-fluid figure-img" style="width:70.0%">
+</div>
+<figcaption class="quarto-float-caption-bottom quarto-float-caption quarto-float-fig" id="fig-anticline-caption-0ceaefa1-69ba-4598-a22c-09a6ac19f8ca">
+Figure&nbsp;1.2: Schematic of geologically-sequestered CO<span class="math inline">\(_2\)</span> in an anticline formation. Single-phase CO<span class="math inline">\(_2\)</span> is injected at a point downslope of the apex, but rises towards the apex because it is more buoyant than the surrounding brine. Capillary-tragged CO<span class="math inline">\(_2\)</span> is left behind in its wake. Further rising of the buoyant CO<span class="math inline">\(_2\)</span> is halted by the impermeable cap rock layer, though leakage may still occur through faults, or over a much longer time scale if the cap rock has low but non-zero permeability. Some anticline formations may also have a background hydrogeological flow from on side to the other. Boxes 1, 2 and 3 isolate the different regions and flows within the anticline formations that research into the fluid dynamics of carbon sequestration has investigated so far with simplified mathematical and numerical models. A simplified model for box 4 is proposed in the following section.
+</figcaption>
+</figure>
+</div>
 
 
-</section>
+<div id="refs" class="references csl-bib-body hanging-indent" data-entry-spacing="0" role="list" style="display: none">
+<div id="ref-metzIPCCSpecialReport2005" class="csl-entry" role="listitem">
+Metz, Bert, Ogunlade Davidson, Heleen de Coninck, Manuela Loos, and Leo Meyer. 2005. <em>IPCC Special Report on Carbon Dioxide Capture and Storage</em>. Cambridge University Press, New York, NY (United States). <a href="https://www.osti.gov/biblio/20740954">https://www.osti.gov/biblio/20740954</a>.
+</div>
+</div>
 
 </main> <!-- /main -->
 <script id="quarto-html-after-body" type="application/javascript">
@@ -636,10 +674,13 @@ window.Quarto = {
   </script>
 <nav class="page-navigation">
   <div class="nav-page nav-page-previous">
+      <a href="./toc.html" class="pagination-link" aria-label="toc.html">
+        <i class="bi bi-arrow-left-short"></i> <span class="nav-page-text">toc.html</span>
+      </a>          
   </div>
   <div class="nav-page nav-page-next">
-      <a href="./asbtract.html" class="pagination-link" aria-label="Abstract">
-        <span class="nav-page-text">Abstract</span> <i class="bi bi-arrow-right-short"></i>
+      <a href="./chapter02.html" class="pagination-link" aria-label="Governing equations for the dissolution of capillary-trapped CO$_2$">
+        <span class="nav-page-text"><span class="chapter-number">2</span>&nbsp; <span class="chapter-title">Governing equations for the dissolution of capillary-trapped CO<span class="math inline">\(_2\)</span></span></span> <i class="bi bi-arrow-right-short"></i>
       </a>
   </div>
 </nav>

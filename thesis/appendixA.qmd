@@ -1,0 +1,198 @@
+# List of symbols {.unnumbered .unlisted}
+
+Snippets of Python code and any output generated are included as 
+
+```{python}
+import numpy as np
+import lucifex
+print('hello world')
+```
+
+
+In general we use bold characters (e.g. $\textbf{a}, \textbf{b}, \textbf{c}, \dots$) to denote vector-valued quantities and sans-serif (e.g. $\mathsf{A}, \mathsf{B}, \mathsf{C}, \dots$) characters for matrix or tensor-valued quantities.
+
+\begin{table}[ht]
+\centering
+\begin{tabular}{|l|l|c|}
+\cline{1-3}
+Symbol(s) & Description & Definition \\ \cline{1-3}
+$\Omega$ & domain & \\
+$\partial\Omega$ & domain boundary & \\
+$\text{d}\Omega$ & volume element & \\
+$\text{d}\Gamma$ & surface element & \\
+$\textbf{n}$ & outward unit normal vector & \\
+$\textbf{x}=(x,y,z)$ & spatial coordinates & \\
+$\textbf{e}_x, \textbf{e}_y, \textbf{e}_z$ & unit vectors & \\
+$\textbf{g}$, $g$ & gravity (vector and magnitude) & \\
+$t$ & time & \\
+$\phi$ & effective porosity & \eqref{eq:EffectivePorosity} \\
+$\varphi$ & rock formation porosity & \\
+$s$ & saturation of capillary-trapped CO\textsubscript{2} & \\
+$\textbf{u}=(u_x,u_y,u_z)$ & Darcy velocity & \\
+$p$ & pressure & \\
+$\psi$ & streamfunction & \\
+$c$ & concentration of dissolved CO\textsubscript{2} & \\
+$\theta$ & temperature & \\
+$\mathsf{K}$, $K$ & permeability (tensor or scalar valued) & \\ 
+$\mathsf{D}$, $D$ & solutal dispersion (tensor or scalar valued) & \\
+$\mathsf{G}$, $G$ & thermal dispersion (tensor or scalar valued) & \\ 
+$\rho$ & fluid density & \\ 
+$\mu$ & fluid viscosity & \\ 
+$c_{\text{e}}$ & equilibrium concentration of dissolved CO\textsubscript{2} & \\
+$R$ & reaction rate & \\
+$\widehat{\cdot}$ & non-dimensional or rescaled quantity & \\ 
+$\mathcal{L}$ & length scale & \\ 
+$\mathcal{U}$ & velocity scale & \\ 
+$\mathcal{T}$ & time scale & \\ 
+$Ra$ & solutal Rayleigh number & \eqref{eq:SolutalRayleighNumber} \\ 
+$Pe$ & Peclet number & ... \\ 
+$Da$ & Damkohler number & \eqref{eq:DamkohlerNumber} \\ 
+$\varepsilon$ & ratio of single-phase CO\textsubscript{2} density to reference brine density & \eqref{eq:EpsilonDensityRatio} \\
+$\varrho$ & density of single-phase CO\textsubscript{2} & \eqref{eq:EtaDensityRatio}\\ 
+\cline{1-3}
+\end{tabular}
+\caption{Symbols from the governing equations and constitutive relations}
+\label{tab:SymbolsGoverningEquation}
+\end{table}
+
+\begin{table}[ht]
+ \centering
+\begin{tabular}{|l|l|c|}
+\cline{1-3}
+Symbol(s) & Description & Definition \\ \cline{1-3}
+$s_r$ & residual saturation of capillary-trapped CO\textsubscript{2} at initialization & \\ 
+$c_r$ & residual concentration of dissolved CO\textsubscript{2} at initialization & \\ 
+$h_0$ & initial reaction front height & \\
+$\varepsilon$ & ratio of single-phase CO\textsubscript{2} density to reference brine density & \\
+$\varrho$ & density of single-phase CO\textsubscript{2} & \\ 
+$\beta$ & domain inclination angle & \\
+$\delta$ & coefficient of temperature in equilibrium concentration & \\
+$\gamma$ & coefficient of temperature in fluid density &  \\
+$\vartheta$ & permeability cross-bedding angle & \\
+$\kappa$ & permeability cross-bedding anisotropy & \\
+\cline{1-3}
+\end{tabular}
+\caption{Symbols from the solutal model}
+\label{tab:SymbolSolutal2D}
+\end{table}
+
+\begin{table}[ht]
+ \centering
+\begin{tabular}{|l|l|c|}
+\cline{1-3}
+Symbol(s) & Description & Definition \\ \cline{1-3}
+$\cdot\,_{\text{b}}$ & base state & \\
+$\cdot\,'$ & perturbation from the base state & \\
+$k$ & horizontal wavenumber & \\
+$\sigma$ & growth rate & \\
+$\hat{\cdot\,}_j(k;y,t)$ & coefficients in the Galerkin method expansion & \\
+$A(t;k)$ & perturbation amplitude & \\
+\cline{1-3}
+\end{tabular}
+\caption{Symbols from the stability analysis}
+\label{tab:SymbolsStability}
+\end{table}
+
+
+\begin{table}[ht]
+ \centering
+\begin{tabular}{|l|l|c|}
+\cline{1-3}
+Symbol(s) & Description & Definition \\ \cline{1-3}
+$\Gamma_h$ & reaction front contour & \\
+$h(x,t)$ & reaction front height & \\
+$\Gamma_f$ & fluid front contour & \\
+$f(x,t)$ & fluid front height & \\
+$m_C(t)$ & mass of capillary-trapped CO\textsubscript{2} & \\
+$m_D(t)$ & mass of dissolved CO\textsubscript{2} & \\
+$F(t)$, $F_A(t)$, $F_D(t)$ & solutal flux (total, advective and diffusive) & \\
+$J(t)$, $J_A(t)$, $J_D(t)$ & thermal flux (total, advective and diffusive) & \\
+$\Gamma_{P}$ & solutal plume contour & \\
+$N^{\uparrow\downarrow}_{P}(t)$ & number of ascending and descending plume fingers & \\
+$u^{\uparrow\downarrow}_{P}(t)$ & average velocity of ascending and descending plume fingers & \\
+$w^{\uparrow\downarrow}_{P}(t)$ & average width of ascending and descending plume fingers & \\
+$k_{P}(y,t)$ & instantaneous plume wavenumber & \\
+\cline{1-3}
+\end{tabular}
+\caption{Symbols from the results}
+\label{tab:SymbolsResults}
+\end{table}
+
+
+\begin{table}[ht]
+ \centering
+\begin{tabular}{|l|l|c|}
+\cline{1-3}
+Symbol(s) & Description & Definition \\ \cline{1-3}
+$\mathcal{D}$ & finite difference operator & \\
+$\Delta t$ & time step & \\
+$\mathcal{K}$ & cell & \\
+$\cup_{\mathcal{K}}\mathcal{K}$ & union of cells forming the mesh & \\
+$\mathcal{F}$ & cell facets & \\
+$\mathcal{V}$ & cell vertices & \\
+$\ell$ & cell size measure & \\
+$N_x, N_y, N_z$ & number of cells along the coordinate axes of a uniform structured mesh & \\
+$L^2(\Omega)$ & Lebesgue space on the domain $\Omega$ & \\
+$H^1(\Omega)$ & Sobolev space on the domain $\Omega$ & \\
+$\text{P}_k$ & continuous Lagrange element of degree $k$ & \\
+$\text{DP}_k$ & discontinous Lagrange element of degree $k$ & \\
+$\text{BDM}_k$ & Brezzi-Douglas-Marini element of degree $k$ & \\
+$\xi_j(\textbf{x})$, $\boldsymbol{\xi}_j(\textbf{x})$ & finite element basis function  (scalar or vector valued) & \\
+$v, \textbf{v}$ & test function (scalar or vector valued) & \\
+$V$ & trial function space & \\
+$\hat{V}$ & test function space & \\
+$\mathcal{R}$ & residual & \\
+$\tau$ & SUPG stabilization parameter & \\
+$\llbracket\cdot\rrbracket$  & cell facet jump operator & \\
+$\{\cdot\}$  & cell facet average operator & \\
+$\alpha_{\text{DG}}$ & DG penalty parameter & \\
+$\gamma_{\text{DG}}$  & DG penalty parameter & \\
+\cline{1-3}
+\end{tabular}
+\caption{Symbols from the finite element formulation of the governing equations}
+\label{tab:SymbolsFem}
+\end{table}
+
+
+\begin{table}[ht]
+ \centering
+\begin{tabular}{|l|l|c|}
+\cline{1-3}
+Symbol(s) & Description & Definition \\ \cline{1-3}
+$\frac{\text{d}}{\text{d}x}$ & derivative operator & \\
+$\partial_x=\frac{\partial}{\partial x}$ & partial derivative operator & \\
+$\nabla=(\partial_x, \partial_y, \partial_z)$ & gradient operator & \\
+$\text{H}$ & Heaviside step function & \\
+$\mathsf{I}$ & identity tensor & \\
+$\text{det}$ & matrix determinant & \\
+$\min_{\textbf{x}\in\Omega}$ & global minimum over the domain $\Omega$ & \\
+$\max_{\textbf{x}\in\Omega}$ & global maximum over the domain $\Omega$  & \\
+$\text{vol}$ & volume of domain $\Omega$ & \\
+$\langle\cdot\rangle_\Omega$ & spatially-averaged quantity over $\Omega$&  \\
+$\overline{~\cdot~}^{_{[t,t']}}$ & time-averaged quantity over $[t,t']$& \\
+\cline{1-3}
+\end{tabular}
+\caption{General operator symbols}
+\label{tab:SymbolsOperator}
+\end{table}
+
+
+\begin{table}[ht]
+ \centering
+\begin{tabular}{|l|l|}
+\cline{1-2}
+Acronym & Definition \\ \cline{1-2}
+CCS & carbon capture and sequestration \\
+PDE & partial differential equation \\
+ODE & ordinary differential equation \\
+DNS & direct numerical simulation \\
+CG & continous Galerkin \\
+DG & discontinuous Galerkin \\
+SUPG & streamline-upwind Petrov-Galerkin \\
+CFL & Courant–Friedrichs–Lewy \\
+\cline{1-2}
+\end{tabular}
+\caption{Acronyms used in this thesis}
+\label{tab:SymbolsAcronym}
+\end{table}
+
